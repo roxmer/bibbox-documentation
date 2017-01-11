@@ -9,3 +9,5 @@ pages:
     - Use Applicatons:
         - Bika: apptutorials/bika.md
         - Phenotips: apptutorials/phenotips.md
+
+theme: readthedocs
