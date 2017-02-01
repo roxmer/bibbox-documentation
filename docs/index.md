@@ -21,12 +21,14 @@ For full documentation visit [b3africa.org](http://b3africa.org).
 ## Roles
 
 ###  Super administrator (VM) function:
+- Definition
 - How to start
 - Deploy/integrate in own institution
 - Create users for the instance (roles)
 - Change the structure of the portal
 
 ### Administrator function:
+- Definition
 - How to start
 - Add applications
 - Backup
@@ -34,12 +36,14 @@ For full documentation visit [b3africa.org](http://b3africa.org).
 - Create users in applications installed
 
 ### PI and Curator function:
+- Definition
 - How to start
 - Document instance / installed applications
 - Integrate data between several applications installed (biobanking, experiments and bioinformatics)
 
 
 ### Operator
+- Definition
 - How to start
 - Use applications
 - Audit ethical aspects
