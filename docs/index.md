@@ -33,7 +33,7 @@ For full documentation visit [b3africa.org](http://b3africa.org).
 - Updates
 - Create users in applications installed
 
-### PI and Curator unction:
+### PI and Curator function:
 - How to start
 - Document instance / installed applications
 - Integrate data between several applications installed (biobanking, experiments and bioinformatics)
@@ -48,4 +48,5 @@ For full documentation visit [b3africa.org](http://b3africa.org).
 
 ## References
 
-## Acknowledgements 
+## Acknowledgements
+B3Africa partners thank etc
