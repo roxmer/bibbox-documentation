@@ -1,7 +1,7 @@
 site_name: eB3Kit
 
 pages:
-    - Introduction: introduction.md
+    - Introduction: index.md
     - Installation: installation.md
     - Ethical Framework: ethics.md
     - Install Applications: admin-documentation.md
