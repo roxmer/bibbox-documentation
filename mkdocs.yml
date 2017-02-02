@@ -1,11 +1,12 @@
-site_name: eB3Kit
+site_name: BIBBOX
 
 pages:
     - Introduction: index.md
     - Installation: installation.md
     - Ethical Framework: ethics.md
-    - Install Applications: admin-documentation.md
-    - Manage Applicatoins: pi-curators-documentation.md
+    - Install Apps: admin-documentation.md
+    - Create Apps: app-creators-manual.md
+    - Manage Apps: pi-curators-documentation.md
     - Use Applicatons:
         - Bika: apptutorials/bika.md
         - Phenotips: apptutorials/phenotips.md
