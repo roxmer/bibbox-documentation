@@ -69,17 +69,17 @@ You can download and those tools from their official websites:
 
 <https://git-scm.com/downloads>
 
-![alt text](images/git-download.jpg "Git")
+![alt text](images/installation/git-download.jpg "Git")
 
 
 <https://www.vagrantup.com/downloads.html>
 
-![alt text](images/vagrant-downloads.jpg "Vagrant")
+![alt text](images/installation/vagrant-downloads.jpg "Vagrant")
 
 
 <https://www.virtualbox.org/>
 
-![alt text](images/virtualbox-download.jpg "VirtualBox")
+![alt text](images/installation/virtualbox-download.jpg "VirtualBox")
 
 
 If you only have SSH access to the machine you want to install BIBBOX on, you can also download and install Vagrant and VirtualBox from there.
@@ -148,7 +148,7 @@ Please note, that this can take quite a while depending on internet connection s
 Just leave the terminal open and do some other work while the installation is running.
 You will recognize it has finished, when you see a message saying "Applied catalog in xyz seconds" and you can write commands again in the terminal.
 
-![alt text](images/installation-finished.png "Finished installation")
+![alt text](images/installation/installation-finished.png "Finished installation")
 
 
 #### 5.) Accessing the BIBBOX in the browser
@@ -160,7 +160,7 @@ Please note, that this process will take several minutes!
 After everything is finished, you can access your freshly installed BIBBOX in your browser at http://**192.168.10.1**:18080 (replace the fat numbers with the IP address of your host machine).
 If you have access to your hosting providers administration panel you can also rent a domain name like "bibbox.org" and point it to that address.
 
-![alt text](images/bibbox.jpg "Welcome to BIBBOX")
+![alt text](images/installation/bibbox.jpg "Welcome to BIBBOX")
 
 
 
