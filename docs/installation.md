@@ -1,5 +1,3 @@
-# Installation 
-
 The following instructions will guide an adminisistrator through the setup process of an BIBBOX.
 
 There are two possible installation types:
@@ -10,16 +8,14 @@ There are two possible installation types:
 Notice: It is recommended to build a new BIBBOX using the automated installation scripts.
 
 
-## Building a new BIBBOX
+# Requirements
 
-### Requirements
+Requirements
 
 * Download and install Git -> <https://git-scm.com/>
 * Download and install Vagrant -> <https://www.vagrantup.com>
 * Download and install VirtualBox -> <https://www.virtualbox.org>
 
-
-### Dependencies
 
 The automatic BIBBOX setup is dependend on multiple repositories and one ZIP file download link:
 
@@ -32,7 +28,7 @@ The automatic BIBBOX setup is dependend on multiple repositories and one ZIP fil
 * BIBBOX Repository 'sys-idmapping': <https://github.com/bibbox/sys-idmapping>
 
 
-### Configuration
+# Configuration
 
 The following parameters can be adjusted in `environments\production\manisfests\config.pp`:
 
@@ -46,7 +42,7 @@ The following parameters can be adjusted in `environments\production\manisfests\
 | db_name       | Name of the Liferay database.                                                                                        | lportal           |
 
 
-### Quick installation guide for expert users
+# Quick installation guide
 
 1. Download or clone the Git repository, **git clone <https://github.com/bibbox/kit-eb3kit.git> your-vm-name**
 2. Open up a terminal and navigate to the repository, **cd your-vm-name**
@@ -60,9 +56,9 @@ The following parameters can be adjusted in `environments\production\manisfests\
 
 
 
-### Detailed beginners guide
+# Detailed Instructions
 
-#### 1.) Setting up the requirements
+## 1.) Setting up the requirements
 
 In order for the automatic BIBBOX setup to work, you need to have Git, Vagrant and VirtualBox installed on your machine.
 You can download and those tools from their official websites:
@@ -96,7 +92,7 @@ Run these commands for downloading and installing Vagrant and Virtualbox on Debi
 
 
 
-#### 2.) Cloning the installer scripts
+## 2.) Cloning the installer scripts
 
 Next, you need to choose an directory to clone the installation scripts to.
 If you are installing from SSH you can create an directory with:
@@ -116,7 +112,7 @@ Once the repository has finished cloning, navigate into it:
 `cd "your-kit-name"`
 
 
-#### 3.) BIBBOX installer configuration
+## 3.) BIBBOX installer configuration
 
 You can change the default configuration of your BIBBOX installation in the following files:
 
@@ -136,7 +132,7 @@ Please find more information for configuration options in the **Configuration** 
 
 
 
-#### 4.) Running the installer
+## 4.) Running the installer
 
 You can now run the automated installation process with the following command:
 
@@ -151,7 +147,7 @@ You will recognize it has finished, when you see a message saying "Applied catal
 ![alt text](images/installation/installation-finished.png "Finished installation")
 
 
-#### 5.) Accessing the BIBBOX in the browser
+## 5.) Proxy , DNS configuration
 
 After the automated installation has finished, BIBBOX will automatically start its internal configuration process and boot up the BIBBOX portal.
 
@@ -164,7 +160,7 @@ If you have access to your hosting providers administration panel you can also r
 
 
 
-#### 6.) Login and administration
+## 6.) Login and administration
 
 You can now log into your BIBBOX with one of the five default users and the password **graz2017**:
 
@@ -177,14 +173,13 @@ You can now log into your BIBBOX with one of the five default users and the pass
 If you want to make changes to the default configuration of the portal (e.g. change the title or logo), you need to log in as **bibboxadmin**.
 
 
-#### 7.) Enjoy
+## 7.) Enjoy
 
 That's all, enjoy your BIBBOX!
 
+# Configure an exitisting VM
+
+# Reference Information
 
 
-### In-depth guide and configuration
 
-
-
-## Use a pre-built BIBBOX VM
