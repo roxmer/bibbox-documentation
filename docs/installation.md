@@ -42,7 +42,13 @@ The following parameters can be adjusted in `environments\production\manisfests\
 | db_name       | Name of the Liferay database.                                                                                        | lportal           |
 
 
+<<<<<<< Updated upstream
 # Quick installation guide
+=======
+
+
+### Quick installation guide for expert users
+>>>>>>> Stashed changes
 
 1. Download or clone the Git repository, **git clone <https://github.com/bibbox/kit-eb3kit.git> your-vm-name**
 2. Open up a terminal and navigate to the repository, **cd your-vm-name**
@@ -56,7 +62,12 @@ The following parameters can be adjusted in `environments\production\manisfests\
 
 
 
+<<<<<<< Updated upstream
 # Detailed Instructions
+=======
+
+### Detailed beginners guide
+>>>>>>> Stashed changes
 
 ## 1.) Setting up the requirements
 
@@ -179,7 +190,28 @@ That's all, enjoy your BIBBOX!
 
 # Configure an exitisting VM
 
+<<<<<<< Updated upstream
 # Reference Information
+=======
 
+>>>>>>> Stashed changes
+
+### Technical Prcedure
+
+This chapter will explain in more detail the technical processes during the installation of a BIBBOX.
+
+#### 1. Configuration lookup
+
+After running `vagrant up` from terminal, Vagrant will look up the Vagrantfile configuration
+
+#### 2. Downloading and installation of the Virtual Box image
+
+In the Vagrantfile, the Virtual Box image to set up the virtual machine is defined.
+In this case it's **puppetlabs/ubuntu-14.04-64-puppet**, an Ubuntu Trusty image found in Hashicorp's Atlas platform)
+
+`config.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"`
+
+
+3. After downloading and installing the image, Vagrant will now configure which IP and ports should be mapped to which part of the virtual machine
 
 
