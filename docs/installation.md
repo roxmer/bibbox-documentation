@@ -42,13 +42,7 @@ The following parameters can be adjusted in `environments\production\manisfests\
 | db_name       | Name of the Liferay database.                                                                                        | lportal           |
 
 
-<<<<<<< Updated upstream
 # Quick installation guide
-=======
-
-
-### Quick installation guide for expert users
->>>>>>> Stashed changes
 
 1. Download or clone the Git repository, **git clone <https://github.com/bibbox/kit-eb3kit.git> your-vm-name**
 2. Open up a terminal and navigate to the repository, **cd your-vm-name**
@@ -62,12 +56,7 @@ The following parameters can be adjusted in `environments\production\manisfests\
 
 
 
-<<<<<<< Updated upstream
 # Detailed Instructions
-=======
-
-### Detailed beginners guide
->>>>>>> Stashed changes
 
 ## 1.) Setting up the requirements
 
@@ -188,30 +177,205 @@ If you want to make changes to the default configuration of the portal (e.g. cha
 
 That's all, enjoy your BIBBOX!
 
-# Configure an exitisting VM
 
-<<<<<<< Updated upstream
+
 # Reference Information
-=======
-
->>>>>>> Stashed changes
-
-### Technical Prcedure
 
 This chapter will explain in more detail the technical processes during the installation of a BIBBOX.
 
-#### 1. Configuration lookup
+## 1.) Vagrant, Puppet manifest
+
+
+### Configuration lookup
 
 After running `vagrant up` from terminal, Vagrant will look up the Vagrantfile configuration
 
-#### 2. Downloading and installation of the Virtual Box image
+
+### Name configuration
+
+This defines a variable `bibboxbaseurl` to store the name of our virtual machine. Default is `eb3kit.bibbox.org`.
+
+```
+# Base url the bibbox kit (should be same as in puppet config file)
+bibboxbaseurl = "eb3kit.bibbox.org"
+
+vb.name = bibboxbaseurl
+```
+
+
+### Downloading and installation of the Virtual Box image
 
 In the Vagrantfile, the Virtual Box image to set up the virtual machine is defined.
-In this case it's **puppetlabs/ubuntu-14.04-64-puppet**, an Ubuntu Trusty image found in Hashicorp's Atlas platform)
+In this case it's **puppetlabs/ubuntu-14.04-64-puppet**, an Ubuntu Trusty image found in Hashicorp's Atlas platform, which already includes Puppet 4.3.
 
 `config.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"`
 
 
-3. After downloading and installing the image, Vagrant will now configure which IP and ports should be mapped to which part of the virtual machine
+### IP / Port configuration
+
+After downloading and installing the image, Vagrant will now configure which IP and ports should be mapped to which part of the virtual machine.
+
+```
+#Webserver
+config.vm.network :forwarded_port, host: 1080,  guest: 80
+
+#Tomcat - Liferay
+config.vm.network :forwarded_port, host: 18080, guest: 8080
+config.vm.network :forwarded_port, host: 18000, guest: 8000
+config.vm.network :forwarded_port, host: 18081, guest: 8081
+
+config.vm.network :private_network, ip: "192.168.10.10"
+
+config.vm.network :forwarded_port, guest: 22, host: 2230, id: "ssh", disabled: true
+config.vm.network :forwarded_port, guest: 22, host: 2231, auto_correct: true
+```
+
+
+### CPU / Memory definition
+
+Next, Vagrant will define the amount of memory (RAM) and CPU cores of the host machine, that will be accessible by the virtual machine.
+
+```
+# (Option 1) Customize the amount of memory and the cpu cores of the VM:
+
+vb.memory = "10240"	# 10GB of RAM
+vb.cpus = 4
+```
+
+```
+# (Option 2) Give VM 1/4 system memory & access to all cpu cores on the host
+
+host = RbConfig::CONFIG['host_os']
+
+if host =~ /darwin/
+	vb.cpus = `sysctl -n hw.ncpu`.to_i
+	# sysctl returns Bytes and we need to convert to MB
+	vb.memory = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
+elsif host =~ /linux/
+	vb.cpus = `nproc`.to_i
+	# meminfo shows KB and we need to convert to MB
+	vb.memory = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
+else	# Fallback for Windows
+	vb.cpus = 4
+	vb.memory = 10240
+end
+```
+
+
+### Storage definition
+
+In this step, an additional storage disk will be added to the virtual machine. The default size for it is 301GB.
+
+```
+# Create new disk of size 301GB
+file_to_disk = File.realpath( "." ).to_s + "/disk-300GB.vdi"
+
+if ARGV[0] == "up" && ! File.exist?(file_to_disk) 
+   puts "Creating 300GB disk #{file_to_disk}."
+   vb.customize [
+        'createhd', 
+        '--filename', file_to_disk, 
+        '--format', 'VDI', 
+        '--size', 301 * 1024 # 301 GB
+        ] 
+   vb.customize [
+        'storageattach', bibboxbaseurl, 
+        '--storagectl', 'IDE Controller', 
+        '--port', 1, '--device', 0, 
+        '--type', 'hdd', '--medium', 
+        file_to_disk
+        ]
+end
+```
+
+
+### Provisioning
+
+Now that the virtual machine is set up and booted, our provisioning will execute multiple commands within the virtual machine.
+We use this opportunity to set the storage disks in Raid-0 mode, download Liferay and install some Puppet modules aas well as Python3 pip and iNotify tools.
+
+```
+# Provision the VM with several puppet modules
+config.vm.provision "shell", inline: <<-SHELL
+sudo bash /vagrant/resources/add_disk.sh
+mkdir -p /etc/puppetlabs/code/modules
+cp -r /vagrant/modules/* /etc/puppetlabs/code/modules
+if [ ! -f "/opt/liferay-ce-portal-tomcat-7.0-ga3.zip" ]; then
+  echo "Downloading Liferay, this might take a while...";
+  wget -nc -nv -P /opt/ "http://downloads.bibbox.org/liferay-ce-portal-tomcat-7.0-ga3.zip";
+else
+  echo "Liferay sources already exist. Skipping download.";
+fi
+puppet module install puppetlabs-stdlib --version 4.14.0 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppetlabs-apt --version 2.3.0 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppetlabs-ntp --version 6.0.0 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppetlabs-firewall --version 1.8.1 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppetlabs-apache --version 1.11.0 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppet-archive --version 1.2.0 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppetlabs-vcsrepo --version 1.5.0 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppet-alternatives --version 1.0.2 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppetlabs-docker_platform --version 2.1.0 --modulepath /etc/puppetlabs/code/modules
+puppet module install puppetlabs-postgresql --version 4.8.0 --modulepath /etc/puppetlabs/code/modules
+puppet module install tylerwalts-jdk_oracle --version 1.5.0 --modulepath /etc/puppetlabs/code/modules
+sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 7F438280EF8D349F
+sudo apt-get update
+sudo apt-get install -y inotify-tools
+sudo apt-get install -y python3-pip
+SHELL
+```
+
+Additionally we tell Puppet and the virtual machine the new vm name as defined in `bibboxbaseurl`.
+Also, the default environment for Puppet will be set, so Puppet knows where to find its initialization manifests.
+
+```
+config.vm.provision "puppet" do |puppet|
+	puppet.facter = {
+	  "fqdn" => bibboxbaseurl
+	}
+
+	puppet.environment = "production"
+	puppet.environment_path = "environments"
+end
+```
+
+
+### Puppet configuration
+
+Vagrant has now set up the virtual machine, defined its resources and provisioned our Puppet tools. Next, it will automatically apply our default Puppet manifest `environments/production/manifests/config.pp`.
+This is a config layer that let's us configure our BIBBOX settings in a clean file.
+
+```
+#################################
+##       Configurations        ##
+#################################
+
+class { 'vmbuilder':
+
+	# General Kit Information
+	bibboxkit		=> "eB3Kit",
+	bibboxbaseurl	=> "eb3kit.bibbox.org",
+	serveradmin		=> "admin@bibbox.org",
+
+	# Database Information
+	db_user			=> "liferay",
+	db_password		=> "CHANGEulHbbFpulHbM74JuBk9@CwMS",
+	db_name			=> "lportal"
+
+}
+```
+
+
+### Puppet initialization
+
+The Puppet configuration file automatically calls the vmbuilder class found in `modules/vmbuilder/manifests/init.pp` and hands over out configuration parameters.
+
+
+
+## 2.) Installation scripts
+
+
+
+
+## This chapter is still in development...
 
 
