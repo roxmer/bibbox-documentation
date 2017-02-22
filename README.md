@@ -1,8 +1,9 @@
 # BIBBOX and eB3Kit Dokumentation
 
-The user documentation for BIBBOX and teh B3Africa eB3Kit Dokumentation is made by mkdocs, and is available @ http://bibbox.readthedocs.io/en/latest/
+The user documentation for BIBBOX and the B3Africa eB3Kit is made by mkdocs, and can be 
+found here [BIBBOX User Documentation](http://bibbox.readthedocs.io/en/latest/).
 
-Developer documentation can be found within the group of bibbox repositories, which are strcutured according to the following naming conventions:
+The developer documentation is at the specific bibbox repository. The repositories are strcutured according to the following naming conventions:
 
 * **application-store** repositores describes a lost of all applications (applications.json) and a annotated list of application for a 
     specific applicatoin doamin, called kits. Currently we provide one defaults kit, described in eB3kit.json 
