@@ -25,3 +25,4 @@ Developer documentation can be found within the group of bibbox repositories, wh
      * Management of applications, e.g. installation, port management, file management.
      * Setup script for the configuration of the portal, called after vagrant / puppet scripts are finished.
      
+* **RES-.... repositories**  ressources. e.g. a common ICON set for biobank applications.  
