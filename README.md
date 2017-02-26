@@ -19,9 +19,9 @@ The developer documentation is at the specific bibbox repository. The repositori
   * **sys-bibbox-backend-liferay** backend of the BIBBOX portal, based on the liferay framwork. This provides functionaty for the management of 
      applications instances, the application store and the central user management. 
   * **sys-bibbox-frontend** all frontend code (React libraries). They are loaded by the backend at runtime. 
-  * **sys-activities** sercice, for logging and synchronisation of all high level activities (installation, dleeting, start/stop, etc.) 
+  * **sys-activities** service, for logging and synchronisation of all high level activities (installation, dleeting, start/stop, etc.) 
           running as a docker container.  
-  * **sys-idmapping**  sercice, for mapping of internal IDs and connection to external ID systems (B2Handle, EPIC) running a a docker container. 
+  * **sys-idmapping**  service, for mapping of internal IDs and connection to external ID systems (B2Handle, EPIC) running a a docker container. 
   * **sys-bibbox-vmscripts** Collection of phyton scripts for
      * management of applications, e.g. installation, port management, file management.
      * setup script for the configuration of the portal, called after vagrant / puppet scripts are finished.
