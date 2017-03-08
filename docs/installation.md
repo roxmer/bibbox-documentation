@@ -1,15 +1,3 @@
-# About this guide
-
-The following instructions will guide an adminisistrator through the setup process of an BIBBOX.
-
-There are two possible installation types:
-
-* Building and installing a new BIBBOX automatically
-* Installing a pre-built BIBBOX virtual machine
-
-Notice: It is recommended to build a new BIBBOX using the automated installation scripts.
-
-
 # Requirements
 
 Requirements
@@ -39,16 +27,18 @@ The automatic BIBBOX setup depends on multiple repositories and one ZIP file dow
 
 The following parameters are available to configure your virtual machine. You can change them in `Vagrantfile`:
 
-| Parameter     | Description                                                                                      | Default           |
-|---------------|--------------------------------------------------------------------------------------------------|-------------------|
-| vmname        | Name of your virtual machine.                                  	                               | eB3Kit            |
-| bibboxbaseurl | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'.                                                                    | eb3kit.bibbox.org |
-| cpus          | Number of CPU cores assigned to the virtual machine.                                             | admin@bibbox.org  |
-| memory        | Total amount of memory in MB (RAM) available to the virtual machine.                             | 8192              |
-| disksize      | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	   |
-| diskname      | The disk file will be named "disk-**diskname**.vdi".                                             | 301GB             |
-| ip            | The static IP to your BIBBOX within the host's network.                                          | 192.168.10.10     |
-| port          | The static port to your BIBBOX within the host's network.                                        | 1080              |
+| Parameter        | Description                                                                                      | Default           |
+|------------------|--------------------------------------------------------------------------------------------------|-------------------|
+| vmname           | Name of your virtual machine.                                  	                              | eB3Kit            |
+| bibboxbaseurl    | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'.                                                                       | eb3kit.bibbox.org |
+| cpus             | Number of CPU cores assigned to the virtual machine.                                             | admin@bibbox.org  |
+| memory           | Total amount of memory in MB (RAM) available to the virtual machine.                             | 8192              |
+| disksize         | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	      |
+| diskname         | The disk file will be named "disk-**diskname**.vdi".                                             | 301GB             |
+| ip               | The static IP to your BIBBOX within the host's network.                                          | 192.168.10.10     |
+| http_port        | The port to your BIBBOX within the host's network.                                               | 1080              |
+| ssh_vagrant_port | Port for SSH access used internally by Vagrant.                                                  | 2230              |
+| ssh_port         | Port used for SSH access from outside the host machine.                                          | 2231              |
 
 
 ### BIBBOX configuration
@@ -154,18 +144,22 @@ On Linux based systems you can edit this file with `nano Vagrantfile` and save i
 
 * bibboxbaseurl
 * ip
-* port
+* http_port
+* ssh_vagrant_port
+* ssh_port
 
-| Parameter     | Description                                                                                      | Default           |
-|---------------|--------------------------------------------------------------------------------------------------|-------------------|
-| vmname        | Name of your virtual machine.                                  	                               | eB3Kit            |
-| bibboxbaseurl | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'.                                                                    | eb3kit.bibbox.org |
-| cpus          | Number of CPU cores assigned to the virtual machine.                                             | admin@bibbox.org  |
-| memory        | Total amount of memory in MB (RAM) available to the virtual machine.                             | 8192              |
-| disksize      | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	   |
-| diskname      | The disk file will be named "disk-**diskname**.vdi".                                             | 301GB             |
-| ip            | The static IP to your BIBBOX within the host's network.                                          | 192.168.10.10     |
-| port          | The static port to your BIBBOX within the host's network.                                        | 1080              |
+| Parameter        | Description                                                                                      | Default           |
+|------------------|--------------------------------------------------------------------------------------------------|-------------------|
+| vmname           | Name of your virtual machine.                                  	                              | eB3Kit            |
+| bibboxbaseurl    | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'.                                                                       | eb3kit.bibbox.org |
+| cpus             | Number of CPU cores assigned to the virtual machine.                                             | admin@bibbox.org  |
+| memory           | Total amount of memory in MB (RAM) available to the virtual machine.                             | 8192              |
+| disksize         | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	      |
+| diskname         | The disk file will be named "disk-**diskname**.vdi".                                             | 301GB             |
+| ip               | The static IP to your BIBBOX within the host's network.                                          | 192.168.10.10     |
+| http_port        | The port to your BIBBOX within the host's network.                                               | 1080              |
+| ssh_vagrant_port | Port for SSH access used internally by Vagrant.                                                  | 2230              |
+| ssh_port         | Port used for SSH access from outside the host machine.                                          | 2231              |
 
 This is how it looks like in the file:
 
@@ -196,9 +190,17 @@ diskname = "301GB"
 
 # Static IP and port within the host's network
 # ip default: "192.168.10.10"
-# port default: 1080
+# http_port default: 1080
 ip = "192.168.10.10"
-port = 1080
+http_port = 1080
+
+# Ports used for SSH connection
+# ssh_vagrant_port is only for Vagranbt internally
+# default: 2230
+# ssh_port is used to connect from outside
+# default: 2231
+ssh_vagrant_port = 2230
+ssh_port = 2231
 ```
 
 #### BIBBOX configuration
@@ -318,209 +320,13 @@ You can now log into your BIBBOX with one of the five default users and the pass
 If you want to make changes to the default configuration of the portal (e.g. change the title or logo), you need to log in as **bibboxadmin**.
 
 
-## 7.) Enjoy
+## 7.) Access via SSH
+
+In case you need to access the inside of the virtual machine over SSH, there are two ways to do so. If you are already on the host system, you can just run the command `vagrant ssh` from where cloned the GIT repository. You will then be logged in as user **vagrant** with password **vagrant** and home directory **/home/vagrant**. This user is a superuser, so you should not have any permission problems.
+
+When your machine is hosted on a remote server, or you go in production, you will probably want to access the virtual machine from outside the host system as well. For this scenario, we have another user called **vmadmin** with default password **bibbox4ever** and home directoy **/home/vmadmin**. To connect via SSH open up a terminal on any computer with an active internet connection and enter `ssh vmadmin@xxx.xxx.xx.xxx -p 2231` replacing the **x** with the public IP of your host system and the port **2231** with the SSH port you configured during installation. When prompted for a password, just enter the password you set for the **vmadmin** user (default **bibbox4ever**).
+
+
+## 8.) Enjoy
 
 That's all, enjoy your BIBBOX!
-
-
-
-# Under the hood -> WARNING: THIS CHAPTER IS CURRENTLY IN DEVELOPMENT
-
-This chapter will explain in more detail the technical processes during the installation of a BIBBOX.
-
-## 1.) Vagrant, Puppet manifest
-
-
-### Configuration lookup
-
-After running `vagrant up` from terminal, Vagrant will look up the Vagrantfile configuration
-
-
-### Name configuration
-
-This defines a variable `bibboxbaseurl` to store the name of our virtual machine. Default is `eb3kit.bibbox.org`.
-
-```
-# Base url the bibbox kit (should be same as in puppet config file)
-bibboxbaseurl = "eb3kit.bibbox.org"
-
-vb.name = bibboxbaseurl
-```
-
-
-### Downloading and installation of the Virtual Box image
-
-In the Vagrantfile, the Virtual Box image to set up the virtual machine is defined.
-In this case it's **puppetlabs/ubuntu-14.04-64-puppet**, an Ubuntu Trusty image found in Hashicorp's Atlas platform, which already includes Puppet 4.3.
-
-`config.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"`
-
-
-### IP / Port configuration
-
-After downloading and installing the image, Vagrant will now configure which IP and ports should be mapped to which part of the virtual machine.
-
-```
-#Webserver
-config.vm.network :forwarded_port, host: 1080,  guest: 80
-
-#Tomcat - Liferay
-config.vm.network :forwarded_port, host: 18080, guest: 8080
-config.vm.network :forwarded_port, host: 18000, guest: 8000
-config.vm.network :forwarded_port, host: 18081, guest: 8081
-
-config.vm.network :private_network, ip: "192.168.10.10"
-
-config.vm.network :forwarded_port, guest: 22, host: 2230, id: "ssh", disabled: true
-config.vm.network :forwarded_port, guest: 22, host: 2231, auto_correct: true
-```
-
-
-### CPU / Memory definition
-
-Next, Vagrant will define the amount of memory (RAM) and CPU cores of the host machine, that will be accessible by the virtual machine.
-
-```
-# (Option 1) Customize the amount of memory and the cpu cores of the VM:
-
-vb.memory = "10240"	# 10GB of RAM
-vb.cpus = 4
-```
-
-```
-# (Option 2) Give VM 1/4 system memory & access to all cpu cores on the host
-
-host = RbConfig::CONFIG['host_os']
-
-if host =~ /darwin/
-	vb.cpus = `sysctl -n hw.ncpu`.to_i
-	# sysctl returns Bytes and we need to convert to MB
-	vb.memory = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
-elsif host =~ /linux/
-	vb.cpus = `nproc`.to_i
-	# meminfo shows KB and we need to convert to MB
-	vb.memory = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
-else	# Fallback for Windows
-	vb.cpus = 4
-	vb.memory = 10240
-end
-```
-
-
-### Storage definition
-
-In this step, an additional storage disk will be added to the virtual machine. The default size for it is 301GB.
-
-```
-# Create new disk of size 301GB
-file_to_disk = File.realpath( "." ).to_s + "/disk-300GB.vdi"
-
-if ARGV[0] == "up" && ! File.exist?(file_to_disk) 
-   puts "Creating 300GB disk #{file_to_disk}."
-   vb.customize [
-        'createhd', 
-        '--filename', file_to_disk, 
-        '--format', 'VDI', 
-        '--size', 301 * 1024 # 301 GB
-        ] 
-   vb.customize [
-        'storageattach', bibboxbaseurl, 
-        '--storagectl', 'IDE Controller', 
-        '--port', 1, '--device', 0, 
-        '--type', 'hdd', '--medium', 
-        file_to_disk
-        ]
-end
-```
-
-
-### Provisioning
-
-Now that the virtual machine is set up and booted, our provisioning will execute multiple commands within the virtual machine.
-We use this opportunity to set the storage disks in Raid-0 mode, download Liferay and install some Puppet modules aas well as Python3 pip and iNotify tools.
-
-```
-# Provision the VM with several puppet modules
-config.vm.provision "shell", inline: <<-SHELL
-sudo bash /vagrant/resources/add_disk.sh
-mkdir -p /etc/puppetlabs/code/modules
-cp -r /vagrant/modules/* /etc/puppetlabs/code/modules
-if [ ! -f "/opt/liferay-ce-portal-tomcat-7.0-ga3.zip" ]; then
-  echo "Downloading Liferay, this might take a while...";
-  wget -nc -nv -P /opt/ "http://downloads.bibbox.org/liferay-ce-portal-tomcat-7.0-ga3.zip";
-else
-  echo "Liferay sources already exist. Skipping download.";
-fi
-puppet module install puppetlabs-stdlib --version 4.14.0 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppetlabs-apt --version 2.3.0 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppetlabs-ntp --version 6.0.0 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppetlabs-firewall --version 1.8.1 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppetlabs-apache --version 1.11.0 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppet-archive --version 1.2.0 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppetlabs-vcsrepo --version 1.5.0 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppet-alternatives --version 1.0.2 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppetlabs-docker_platform --version 2.1.0 --modulepath /etc/puppetlabs/code/modules
-puppet module install puppetlabs-postgresql --version 4.8.0 --modulepath /etc/puppetlabs/code/modules
-puppet module install tylerwalts-jdk_oracle --version 1.5.0 --modulepath /etc/puppetlabs/code/modules
-sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 7F438280EF8D349F
-sudo apt-get update
-sudo apt-get install -y inotify-tools
-sudo apt-get install -y python3-pip
-SHELL
-```
-
-Additionally we tell Puppet and the virtual machine the new vm name as defined in `bibboxbaseurl`.
-Also, the default environment for Puppet will be set, so Puppet knows where to find its initialization manifests.
-
-```
-config.vm.provision "puppet" do |puppet|
-	puppet.facter = {
-	  "fqdn" => bibboxbaseurl
-	}
-
-	puppet.environment = "production"
-	puppet.environment_path = "environments"
-end
-```
-
-
-### Puppet configuration
-
-Vagrant has now set up the virtual machine, defined its resources and provisioned our Puppet tools. Next, it will automatically apply our default Puppet manifest `environments/production/manifests/config.pp`.
-This is a config layer that let's us configure our BIBBOX settings in a clean file.
-
-```
-#################################
-##       Configurations        ##
-#################################
-
-class { 'vmbuilder':
-
-	# General Kit Information
-	bibboxkit		=> "eB3Kit",
-	bibboxbaseurl	=> "eb3kit.bibbox.org",
-	serveradmin		=> "admin@bibbox.org",
-
-	# Database Information
-	db_user			=> "liferay",
-	db_password		=> "CHANGEulHbbFpulHbM74JuBk9@CwMS",
-	db_name			=> "lportal"
-
-}
-```
-
-
-### Puppet initialization
-
-The Puppet configuration file automatically calls the vmbuilder class found in `modules/vmbuilder/manifests/init.pp` and hands over out configuration parameters.
-
-
-
-## 2.) Installation scripts
-
-
-
-
-## This chapter is still in development...
-
-
