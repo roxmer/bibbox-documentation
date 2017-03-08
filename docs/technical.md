@@ -251,8 +251,6 @@ class { 'vmbuilder':
 
 ### BIBBOX setup procedure
 
-#### In development...
-
 1. The Puppet configuration file automatically calls the **vmbuilder** class found in `modules/vmbuilder/manifests/init.pp` and hands over our configuration parameters. If any üarameters are unset or missing, the **vmbuilder** class will use its default parameters.
 
         class vmbuilder(
