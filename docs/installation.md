@@ -330,3 +330,7 @@ When your machine is hosted on a remote server, or you go in production, you wil
 ## 8.) Enjoy
 
 That's all, enjoy your BIBBOX!
+
+# Domain Migration
+
+TBD by Heimo
