@@ -1,4 +1,4 @@
-# App Installation and Administration
+# Running BIBBOX portal
 
 ### How to start the portal
 ### How to install an App
