@@ -334,4 +334,34 @@ That's all, enjoy your BIBBOX!
 
 # Domain Migration
 
-TBD by Heimo
+if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your VM and make the following steps 
+
+* stop the apache service
+
+'sudo service apache2 stop'
+
+
+* replace all SOME.OLD.DOMAIN  in the proxy files
+
+'cd /etc/apache2'
+
+'sudo cp -r sites-available sites-available-back'
+
+'cd sites-available'
+
+'sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' *
+
+'sudo service apache2 start'
+
+* change to config for the portal
+
+
+'cd /etc/bibbox'
+
+'sudo service liferay stop'
+
+'sudo sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' bibbox.cfg'
+
+'sudo service liferay start'
+
+
