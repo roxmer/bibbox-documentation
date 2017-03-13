@@ -338,30 +338,30 @@ if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your 
 
 * stop the apache service
 
-'sudo service apache2 stop'
+`sudo service apache2 stop`
 
 
 * replace all SOME.OLD.DOMAIN  in the proxy files
 
-'cd /etc/apache2'
+`cd /etc/apache2'
 
-'sudo cp -r sites-available sites-available-back'
+`sudo cp -r sites-available sites-available-back`
 
-'cd sites-available'
+`cd sites-available`
 
-'sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' *
+`sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' *`
 
-'sudo service apache2 start'
+`sudo service apache2 start`
 
 * change to config for the portal
 
 
-'cd /etc/bibbox'
+`cd /etc/bibbox`
 
-'sudo service liferay stop'
+`sudo service liferay stop`
 
-'sudo sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' bibbox.cfg'
+`sudo sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' bibbox.cfg`
 
-'sudo service liferay start'
+`sudo service liferay start`
 
 
