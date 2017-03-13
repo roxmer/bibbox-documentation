@@ -355,13 +355,9 @@ if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your 
 
 * change to config for the portal
 
-
 `cd /etc/bibbox`
-
 `sudo service liferay stop`
-
 `sudo sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' bibbox.cfg`
-
 `sudo service liferay start`
 
 
