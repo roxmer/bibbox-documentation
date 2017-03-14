@@ -363,7 +363,6 @@ if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your 
 
 `sudo service liferay start`
 
-
 The following hints help you to migrate BIBBOX Apps:
 
 **owncloud**
