@@ -366,7 +366,7 @@ if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your 
 
 The following hints help you to migrate BIBBOX Apps:
 
-### owncloud
+**owncloud**
 
 add the YOUR.NEW.DOMAIN as trusted domain in your owncloud container
 
