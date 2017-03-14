@@ -364,3 +364,14 @@ if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your 
 `sudo service liferay start`
 
 
+The following hints help you to migrate BIBBOX Apps:
+
+### owncloud
+
+add the YOUR.NEW.DOMAIN as trusted domain in your owncloud container
+
+`sudo docker exec -it YOUR-OWNCLOUD-CONTAINER-NAME /bin/bash`
+
+`sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' config/config.php`
+
+
