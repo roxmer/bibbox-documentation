@@ -310,11 +310,12 @@ class { 'vmbuilder':
             uid 		=> '507'
         }
         
-4. Next we will use the Apache Puppet module to install an apache server and activate some proxy modules for it.
+4. Next we will use the Apache Puppet module to install an apache server and activate some proxy modules for it. We also delete the default vhost configuration and make sure, the apache points to our Liferay portal.
 
         # Install apache with default config
         class { 'apache':
-            default_vhost => false
+            default_vhost   => false,
+            purge_vhost_dir => false
         }
         class { 'apache::mod::proxy': }
         class { 'apache::mod::proxy_http': }
@@ -326,6 +327,12 @@ class { 'vmbuilder':
         apache::vhost { $bibboxbaseurl:
             port    	=> '80',
             docroot 	=> '/var/www/vhost',
+        }
+        file { '/etc/apache2/sites-enabled/000-default.conf':
+            ensure 		=> 'absent'
+        }
+        file { '/etc/apache2/sites-available/000-default.conf':
+            ensure 		=> 'absent'
         }
         
 5. Another Puppet module named ** JDK Oracle** will help us install Oracle Java in our virtual machine.

@@ -10,6 +10,6 @@ pages:
     - Integrate Apps:
         - Bika: apptutorials/bika.md
         - Phenotips: apptutorials/phenotips.md
-    - Behind the Scenes: technical.md
+    - Under the hood: technical.md
 
 theme: readthedocs
