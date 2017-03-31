@@ -11,7 +11,7 @@
  
 ## Use the BiBBoX demo
 
-- Online: http://demo.bibbox.org 
+- Online: <http://demo.bibbox.org> 
 - Install the demo locally (point to the installation chapters)
  
  
