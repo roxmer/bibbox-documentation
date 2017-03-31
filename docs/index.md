@@ -11,8 +11,8 @@
  
 ## Use the BiBBoX demo
 
-- Online
-- Install the demo locally (with virtual machines or direct with docker)
+- Online: http://demo.bibbox.org 
+- Install the demo locally (point to the installation chapters)
  
  
 ## Roles
