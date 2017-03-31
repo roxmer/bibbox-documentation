@@ -1,9 +1,6 @@
 # Introduction
 
-For full documentation visit [b3africa.org](http://b3africa.org).
-
-
-## What is BiBBox / eB3kit?
+## What is BIBBOX and the eB3kit?
 - Functional (for users)
 - Technical (for IT)
  
@@ -53,4 +50,5 @@ For full documentation visit [b3africa.org](http://b3africa.org).
 ## References
 
 ## Acknowledgements
-B3Africa partners thank etc
+
+BBMRI-ERIC and B3Africa links
