@@ -30,7 +30,7 @@ The following parameters are available to configure your virtual machine. You ca
 | Parameter        | Description                                                                                      | Default           |
 |------------------|--------------------------------------------------------------------------------------------------|-------------------|
 | vmname           | Name of your virtual machine.                                  	                              | eB3Kit            |
-| bibboxbaseurl    | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'.                                                                       | eb3kit.bibbox.org |
+| bibboxbaseurl    | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'. [^footnote]                                                                       | eb3kit.bibbox.org |
 | cpus             | Number of CPU cores assigned to the virtual machine.                                             | admin@bibbox.org  |
 | memory           | Total amount of memory in MB (RAM) available to the virtual machine.                             | 8192              |
 | disksize         | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	      |
@@ -40,7 +40,7 @@ The following parameters are available to configure your virtual machine. You ca
 | ssh_vagrant_port | Port for SSH access used internally by Vagrant.                                                  | 2230              |
 | ssh_port         | Port used for SSH access from outside the host machine.                                          | 2231              |
 
-
+[^footnote]: Test
 ### BIBBOX configuration
 
 The following parameters are available to configure your BIBBOX. You can change them in `environments\production\manisfests\config.pp`:
