@@ -339,7 +339,7 @@ If you would like to test the BIBBOX System localy without a domain you can use 
   * "OK"
   * "Apply"
 * You can now access the BIBBOX with the baseurl you selected, when dnschef is stated, in the browser's address bar!
-* **!!Remember to change the DNS Server enty back when you stop dnschef.**
+* **!!Remember to change the DNS Server entry back when you stop dnschef.**
 
 
 ## 6.) Login and administration
