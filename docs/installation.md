@@ -311,7 +311,7 @@ To access your BIBBOX from the everywhere on the web, you need to map your host'
 
 ## 5b.) local DNS configuration (local test without domain name)
 
-Iy you would like to test the BIBBOX System localy without a domain you can use smale DNS proxy (aka "Fake DNS") tool to simulate a domain address. 
+If you would like to test the BIBBOX System localy without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. 
 
 * Download the dnschef tool https://thesprawl.org/media/projects/dnschef-0.3.zip (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
 * Unzip the folder
