@@ -318,7 +318,7 @@ If you would like to test the BIBBOX System localy without a domain you can use 
 * Create a file called bibbox.ini, replace the **bibbox.local.domain** with the baseurl you selected and the ip address **192.168.10.10** with the ip your VM is accessable.
 
                 [A] # Queries for IPv4 address records
-                *.bibbox.local.domain=**192.168.10.10**
+                *.bibbox.local.domain=192.168.10.10
 
 * Run: **sudo ./dnschef.py --file bibbox.ini -q** in the folder
   * If you get an error like:
@@ -328,7 +328,7 @@ If you would like to test the BIBBOX System localy without a domain you can use 
                 from dnslib import *
                 ImportError: No module named dnslib
                 
-  * You need to add the requerd moduls to your system: sudo pip install dnslib
+  * You need to add the required modules to your system: **sudo pip install dnslib**
 * Change your DNS Server to access the local configured dnschef (127.0.0.1)
   * MAC:
   * Click on your "Apple" menu and choose "System Preferences".
