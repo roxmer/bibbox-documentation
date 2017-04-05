@@ -30,7 +30,7 @@ The following parameters are available to configure your virtual machine. You ca
 | Parameter        | Description                                                                                      | Default           |
 |------------------|--------------------------------------------------------------------------------------------------|-------------------|
 | vmname           | Name of your virtual machine.                                  	                              | eB3Kit            |
-| bibboxbaseurl    | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'. [^footnote]                                                                       | eb3kit.bibbox.org |
+| bibboxbaseurl    | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'. <sup>1</sup>                                                                       | eb3kit.bibbox.org |
 | cpus             | Number of CPU cores assigned to the virtual machine.                                             | admin@bibbox.org  |
 | memory           | Total amount of memory in MB (RAM) available to the virtual machine.                             | 8192              |
 | disksize         | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	      |
@@ -40,7 +40,8 @@ The following parameters are available to configure your virtual machine. You ca
 | ssh_vagrant_port | Port for SSH access used internally by Vagrant.                                                  | 2230              |
 | ssh_port         | Port used for SSH access from outside the host machine.                                          | 2231              |
 
-[^footnote]: Test
+[1]: If you have a domain pleace follow step 5a). If you are testing it localy without a domain please follow step 5b).
+
 ### BIBBOX configuration
 
 The following parameters are available to configure your BIBBOX. You can change them in `environments\production\manisfests\config.pp`:
@@ -253,7 +254,7 @@ You will recognize it has finished, when you see a message saying "Applied catal
 ![alt text](images/installation/installation-finished.png "Finished installation")
 
 
-## 5.) Proxy, DNS configuration
+## 5a.) Proxy, DNS configuration (with domain name)
 
 After the installation has finished, BIBBOX will automatically start its internal configuration process and boot up the BIBBOX's Liferay portal.
 Please note, that this process will take several minutes!
@@ -305,6 +306,27 @@ To access your BIBBOX from the everywhere on the web, you need to map your host'
 6. You can now access the BIBBOX from anywhere in the web by calling your domain or IP:Port combination in the browser's address bar!
 
 ![alt text](images/installation/bibbox.jpg "Welcome to BIBBOX")
+
+
+
+## 5a.) local DNS configuration (local test without domain name)
+
+Iy you would like to test the BIBBOX System localy without a domain you can use smale DNS proxy (aka "Fake DNS") tool to simulate a domain address. 
+
+* Download the dnschef tool https://thesprawl.org/media/projects/dnschef-0.3.zip (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
+* Unzip the folder
+* Create a file called bibbox.ini, replace the **bibbox.local.domain** with the baseurl you selected and the ip address **192.168.10.10** with the ip your VM is accessable.
+
+                [A] # Queries for IPv4 address records
+                *.bibbox.local.domain=**192.168.10.10**
+
+* Run: **sudo ./dnschef.py --file bibbox.ini -q** in the folder
+        * If you get an error like:
+                Traceback (most recent call last):
+                File "./dnschef.py", line 39, in <module>
+                from dnslib import *
+                ImportError: No module named dnslib
+        * You need to add the requerd moduls to your system: sudo pip install dnslib
 
 
 
