@@ -327,7 +327,17 @@ Iy you would like to test the BIBBOX System localy without a domain you can use 
                 from dnslib import *
                 ImportError: No module named dnslib
         * You need to add the requerd moduls to your system: sudo pip install dnslib
-
+* Change your DNS Server to access the local configured dnschef (127.0.0.1)
+        * MAC:
+        * Click on your "Apple" menu and choose "System Preferences".
+        * Double-Click on the “Network” icon.
+        * Select your Network Connection
+        * Select "Advanced"
+        * In the "DNS" Tab add 127.0.0.1
+        * "OK"
+        * "Apply"
+* You can now access the BIBBOX with the baseurl you selected, when dnschef is stated, in the browser's address bar!
+* **!!Remember to change the DNS Server enty back when you stop dnschef.**
 
 
 ## 6.) Login and administration
