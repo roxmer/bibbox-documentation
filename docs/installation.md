@@ -309,7 +309,7 @@ To access your BIBBOX from the everywhere on the web, you need to map your host'
 
 
 
-## 5a.) local DNS configuration (local test without domain name)
+## 5b.) local DNS configuration (local test without domain name)
 
 Iy you would like to test the BIBBOX System localy without a domain you can use smale DNS proxy (aka "Fake DNS") tool to simulate a domain address. 
 
