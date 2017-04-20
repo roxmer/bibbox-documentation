@@ -1,6 +1,6 @@
 # About this guide
 
-This guide serves as a technical documentation for BIBBOX developers. It is used for documenting the under-the-hood functionality and explain how everything works and how to debug common problems.
+This guide serves as a technical documentation for BIBBOX developers. It is used for documenting the under-the-hood functionality, explain how everything works and how to debug common problems.
 
 # Vagrant/Puppet Installer
 
@@ -66,6 +66,7 @@ diskname = "301GB"
 # http_port default: 1080
 ip = "192.168.10.10"
 http_port = 1080
+# https_port = XXXX
 
 # Ports used for SSH connection
 # ssh_vagrant_port is only for Vagranbt internally
@@ -153,7 +154,7 @@ ssh_port = 2231
             size 10M
         }
         
-7. Next in the provisioning, we will download the source files of the Liferay portal as a handy ZIP file. The file should only be downloaded, if it doesn't yet exist on the virtual machine. If it doesn't, it should be saved to **/opt/**. If the file is already there, because we ran the Vagrant provisioning more than once, only a message should be displayed.
+7. Next in the provisioning, we will download the source files of the Liferay portal as a handy ZIP file. The file should only be downloaded, if it doesn't yet exist on the virtual machine. It will be saved to **/opt/**. If the file is already there, because we ran the Vagrant provisioning more than once, only a message should be displayed.
 
         if [ ! -f "/opt/liferay-ce-portal-tomcat-7.0-ga3.zip" ]; then
             echo "Downloading Liferay, this might take a while...";
@@ -184,7 +185,7 @@ ssh_port = 2231
             sudo apt-get install -y python3-pip
         SHELL
 
-10. Now the time for another provisioner has come. This time we don't execute shell commands, but instead do some minor configuration for out Puppet tools. One handy tool that comes with Puppet 4 is **Facter** which is used to list facts about the virtual machine. In our provisioner we tell **Facter**, the domain name we want to run our BIBBOX on later. Then we define our default environment path and default environment. That's all for the provisioning of our machine.
+10. Now the time for another provisioning has come. This time we don't execute shell commands, but instead do some minor configuration for out Puppet tools. One handy tool that comes with Puppet 4 is **Facter** which is used to list facts about the virtual machine. In our provisioning we tell **Facter**, the domain name we want to run our BIBBOX on later. Then we define our default environment path and default environment. That's all for the provisioning of our machine.
 
         config.vm.provision "puppet" do |puppet|
             puppet.facter = {
@@ -219,7 +220,7 @@ Vagrant has now set up the virtual machine, defined its resources and provisione
 
 | Parameter     | Description                                                                                      | Default           |
 |---------------|--------------------------------------------------------------------------------------------------|-------------------|
-| bibboxkit     | Name of the BIBBOX kit, currently only eB3kit is available.                                  	   | eB3Kit            |
+| bibboxkit     | Name of the BIBBOX kit, **currently only eB3kit is available!**                             	   | eB3Kit            |
 | bibboxbaseurl | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'Vagrantfile'. | eb3kit.bibbox.org |
 | serveradmin   | Mail address of the administrator.                                                               | admin@bibbox.org  |
 | db_user       | User of the Liferay database.                                                                    | liferay           |
@@ -256,18 +257,26 @@ class { 'vmbuilder':
 
         class vmbuilder(
 
-            $bibboxkit	= "eB3Kit",
-            $bibboxbaseurl	= "eb3kit.bibbox.org",
-            $serveradmin	= "admin@bibbox.org",
+            $bibboxkit      = "eB3Kit",
+            $bibboxbaseurl  = "eb3kit.bibbox.org",
+            $serveradmin    = "admin@bibbox.org",
 
-            $db_user	= "liferay",
-            $db_password	= "bibbox4ever",
-            $db_name	= "lportal"
+            $db_user        = "liferay",
+            $db_password    = "bibbox4ever",
+            $db_name        = "lportal"
 
         ) {
             . . .
             
-2. The first thing Puppet will do in this class, is the creation of our our user groups **bibbox**, **docker** and **liferay**.
+2. The first thing Puppet will do in this class, is to override the hosts file and the creation of our our user groups **bibbox**, **docker** and **liferay**.
+
+        # Override hosts file
+        file { '/etc/hosts':
+            ensure 		=> 'file',
+            source 		=> '/vagrant/resources/hosts',
+            notify		=> Class['postgresql::server']
+        }
+        
 
         # Ensure groups 'bibbox' and 'docker'
         group { 'bibbox':
@@ -310,12 +319,12 @@ class { 'vmbuilder':
             uid 		=> '507'
         }
         
-4. Next we will use the Apache Puppet module to install an apache server and activate some proxy modules for it. We also delete the default vhost configuration and make sure, the apache points to our Liferay portal.
+4. Next we will use the Apache Puppet module to install an apache server and activate some proxy modules for it.
 
         # Install apache with default config
         class { 'apache':
-            default_vhost   => false,
-            purge_vhost_dir => false
+            default_vhost     => false,
+            purge_vhost_dir   => false
         }
         class { 'apache::mod::proxy': }
         class { 'apache::mod::proxy_http': }
@@ -326,13 +335,7 @@ class { 'vmbuilder':
         # Define default vhost, or apache can't start
         apache::vhost { $bibboxbaseurl:
             port    	=> '80',
-            docroot 	=> '/var/www/vhost',
-        }
-        file { '/etc/apache2/sites-enabled/000-default.conf':
-            ensure 		=> 'absent'
-        }
-        file { '/etc/apache2/sites-available/000-default.conf':
-            ensure 		=> 'absent'
+            docroot 	=> '/var/www/vhost'
         }
         
 5. Another Puppet module named ** JDK Oracle** will help us install Oracle Java in our virtual machine.
@@ -427,7 +430,7 @@ class { 'vmbuilder':
             subscribe	=> File['MoveLiferayContents']
         }
         
-10. Now we will let Puppet create some directories where BIBBOX will store its application instances and a copy of the application store from GitHub, as well as a directory for the import/export tool.
+10. Now we will let Puppet create some directories where BIBBOX will store its application instances and a copy of the application store from GitHub, as well as a directory for the import/export tool and error page.
 
         # Create directories used by bibbox
         file { '/opt/bibbox':
@@ -436,18 +439,24 @@ class { 'vmbuilder':
         }
         file { '/opt/bibbox/application-instance':
             ensure	=> 'directory',
-                owner	=> 'liferay',
-                group   => 'bibbox'
+            owner	=> 'liferay',
+            group   => 'bibbox'
         }
         file { '/opt/bibbox/application-store':
             ensure	=> 'directory',
-                owner	=> 'liferay',
-                group   => 'bibbox'
+            owner	=> 'liferay',
+            group   => 'bibbox'
         }
         file { '/opt/bibbox/application-import-export':
             ensure	=> 'directory',
-                owner	=> 'root',
-                group   => 'bibbox'
+            owner	=> 'root',
+            group   => 'bibbox'
+        }
+        file { '/var/www/html/error':
+            ensure	=> 'directory',
+            owner	=> 'root',
+            group   => 'root',
+            mode	=> '0644'
         }
         
 11. In this step we change the permissions of our apache config directories, so BIBBOX doesn't have any problems in writing new configs for its applications.
@@ -588,7 +597,7 @@ class { 'vmbuilder':
             subscribe	=> File['/etc/init.d/liferay']
         }
         
-17. Now we create some directories and symbolic links for our BIBBOX datastore and the TomCat log.
+17. Now we create some directories and symbolic links for our BIBBOX datastore, the error page and the TomCat log.
 
         # Create and symlink datastore directories
         file { '/var/www/html/bibbox-datastore':
@@ -596,39 +605,43 @@ class { 'vmbuilder':
         }
         file { '/var/www/html/bibbox-datastore/bibbox':
             ensure	=> 'link',
-                target	=> '/opt/bibbox/application-store/'
+            target	=> '/opt/bibbox/application-store/'
         }
         file { '/var/www/html/bibbox-datastore/js':
             ensure	=> 'directory',
-                owner	=> 'root',
-                group 	=> 'bibbox',
-                mode 	=> '0777'
+            owner		=> 'root',
+            group 	=> 'bibbox',
+            mode 		=> '0777'
         }
         file { '/var/www/html/bibbox-datastore/index.html':
             ensure		=> 'file',
-                source		=> '/vagrant/resources/index.html'
+            source		=> '/vagrant/resources/index.html'
+        }
+        file { '/var/www/html/error/index.html':
+            ensure		=> 'file',
+            source		=> '/vagrant/resources/error/index.html'
         }
         file { '/var/www/html/bibbox-datastore/log.out':
             ensure		=> 'link',
-                target		=> '/opt/liferay/tomcat-8.0.32/logs/catalina.out'
+            target		=> '/opt/liferay/tomcat-8.0.32/logs/catalina.out'
         }
         
 18. In this step, we copy our ReactJS GUI sources to the Apache datastore, so we can use them by including an URL in our Liferay portlets.
 
         # Copy gui resources to datastore
         file { '/var/www/html/bibbox-datastore/js/js':
-                recurse		=> true,
-                source		=> '/opt/bibbox/sys-bibbox-frontend/js',
+            recurse		=> true,
+            source		=> '/opt/bibbox/sys-bibbox-frontend/js',
             subscribe	=> Vcsrepo['/opt/bibbox/sys-bibbox-frontend']
         }
         file { '/var/www/html/bibbox-datastore/js/css':
-                recurse		=> true,
-                source		=> '/opt/bibbox/sys-bibbox-frontend/css',
+            recurse		=> true,
+            source		=> '/opt/bibbox/sys-bibbox-frontend/css',
             subscribe	=> Vcsrepo['/opt/bibbox/sys-bibbox-frontend']
         }
         file { '/var/www/html/bibbox-datastore/js/images':
-                recurse		=> true,
-                source		=> '/opt/bibbox/sys-bibbox-frontend/images',
+            recurse		=> true,
+            source		=> '/opt/bibbox/sys-bibbox-frontend/images',
             subscribe	=> Vcsrepo['/opt/bibbox/sys-bibbox-frontend']
         }
         
@@ -664,12 +677,16 @@ class { 'vmbuilder':
         exec { 'dockerUpActivities':
             path		=> '/usr/bin',
             command 	=> '/usr/bin/sudo /usr/local/bin/docker-compose -f /opt/bibbox/sys-activities/docker-compose.yml up -d',
-            subscribe	=> Docker_network['bibbox-default-network']
+            timeout     => 1800,
+            subscribe	=> Docker_network['bibbox-default-network'],
+            require 	=> Class['docker::compose']
         }
         exec { 'dockerUpIdMapping':
             path		=> '/usr/bin',
             command 	=> '/usr/bin/sudo /usr/local/bin/docker-compose -f /opt/bibbox/sys-idmapping/docker-compose.yml up -d',
-            subscribe	=> Docker_network['bibbox-default-network']
+            timeout     => 1800,
+            subscribe	=> Docker_network['bibbox-default-network'],
+            require 	=> Class['docker::compose']
         }
         file { "/etc/bibbox/delete_root_folder_applications.sh":
             ensure		=> 'file',
@@ -689,22 +706,16 @@ class { 'vmbuilder':
 22. Our web services like the ID mapper, Activity monitor, application store and Liferay portal must be reachable by URL. For this purpose we now create some virtual host configuration in our Apache, which points to these services.
 
         # Configure vhosts for apache
+        file { "/etc/apache2/sites-available/000-default.conf":
+            ensure  => 'file',
+            content => epp('/vagrant/resources/templates/000-default.conf.epp', {
+                'bibboxbaseurl'	=> $bibboxbaseurl
+            })
+        }
         file { "/etc/apache2/sites-available/001-default-application-store.conf":
             ensure  => 'file',
             content => epp('/vagrant/resources/templates/001-default-application-store.conf.epp', {
                 'serveradmin'	=> $serveradmin,
-                'bibboxbaseurl'	=> $bibboxbaseurl
-            })
-        }
-        file { "/etc/apache2/sites-available/003-sys-activities.conf":
-            ensure  => 'file',
-            content => epp('/vagrant/resources/templates/003-sys-activities.conf.epp', {
-                'bibboxbaseurl'	=> $bibboxbaseurl
-            })
-        }
-        file { "/etc/apache2/sites-available/003-sys-idmapping.conf":
-            ensure  => 'file',
-            content => epp('/vagrant/resources/templates/003-sys-idmapping.conf.epp', {
                 'bibboxbaseurl'	=> $bibboxbaseurl
             })
         }
@@ -718,26 +729,16 @@ class { 'vmbuilder':
 23. In this piece of Puppet code we create symbolic links for our new Apache vhosts in order to make them active. This will also reload Apache and tell it to look out for those new hosts.
 
         # Symlink the new vhosts config files
-        file { '/etc/apache2/sites-enabled/001-default-application-store.conf':
-            ensure		=> 'link',
-            target		=> '/etc/apache2/sites-available/001-default-application-store.conf',
-            subscribe 	=> File['/etc/apache2/sites-available/001-default-application-store.conf']
-        }
-        file { '/etc/apache2/sites-enabled/003-sys-activities.conf':
-            ensure		=> 'link',
-            target		=> '/etc/apache2/sites-available/003-sys-activities.conf',
-            subscribe 	=> File['/etc/apache2/sites-available/003-sys-activities.conf']
-        }
-        file { '/etc/apache2/sites-enabled/003-sys-idmapping.conf':
-            ensure		=> 'link',
-            target		=> '/etc/apache2/sites-available/003-sys-idmapping.conf',
-            subscribe 	=> File['/etc/apache2/sites-available/003-sys-idmapping.conf']
-        }
-        file { '/etc/apache2/sites-enabled/050-liferay.conf':
-            ensure		=> 'link',
-            target		=> '/etc/apache2/sites-available/050-liferay.conf',
-            subscribe 	=> File['/etc/apache2/sites-available/050-liferay.conf']
-        }
+            file { '/etc/apache2/sites-enabled/001-default-application-store.conf':
+                ensure		=> 'link',
+                target		=> '/etc/apache2/sites-available/001-default-application-store.conf',
+                subscribe => File['/etc/apache2/sites-available/001-default-application-store.conf']
+            }
+            file { '/etc/apache2/sites-enabled/050-liferay.conf':
+                ensure		=> 'link',
+                target		=> '/etc/apache2/sites-available/050-liferay.conf',
+                subscribe => File['/etc/apache2/sites-available/050-liferay.conf']
+            }
         
 24. At the very end of our **vmbuilder** class we copy our own URL configuration into place to enable our very own URL navigation system for the ReactJS GUI. This is basically our own routing configuration. With this, the class is closed and the BIBBOX fully set up. All we have to do now is wait, until Liferay has fully bootedn and we can log in to our new BIBBOX.
 

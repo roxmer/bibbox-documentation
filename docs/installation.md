@@ -64,10 +64,10 @@ If you're already familiar with the BIBBOX installation process and only need a 
 1. Clone the Git repository, `git clone https://github.com/bibbox/kit-eb3kit.git your-vm-name`
 2. In terminal, navigate to the repository, `cd your-vm-name`
 3. Edit the VM and BIBBOX configuration as described above, `nano Vagrantfile` and `nano environments\production\manisfests\config.pp`
-4. Edit the puppet configuration as descibed above, **nano  environments/production/manifests/config.pp**
 5. Run the setup by executing the command `vagrant up` from your base directory.
 6. Wait while your BIBBOX is being installed (can take quite long, depending on internet connection)
-7. Configure your host's proxy or DNS to redirect to the BIBBOX VM at **http://bibboxbaseurl** or use **<http://192.168.10.10:1080>** (replace IP and port with your custom configuration).
+7. Configure your host's proxy or DNS to redirect to the BIBBOX VM at **http://bibboxbaseurl**, where **bibboxbaseurl** is your the domain or subdomain BIBBOX is running on, eg. **demo.bibbox.org**.
+   You can also access the BIBBOX by IP and port **<http://192.168.10.10:1080>** (replace IP and port with your custom configuration), but **in order to install any applications, you will need a domain!** If you don't have one, we recommend DNSChef for faking one.
 8. You can log in to your BIBBOX with the users ***bibboxadmin***, ***admin***, ***pi***, ***curator*** and ***operator***. For all users the default password is ***graz2017***.
 9. To configure the liferay portal of your BIBBOX, log in as user ***bibboxadmin***.
 
@@ -77,9 +77,9 @@ If you're already familiar with the BIBBOX installation process and only need a 
 
 ### 1.) Setting up the requirements
 
-In order to run automatic BIBBOX-setup, you need to have Git, Vagrant and VirtualBox installed on your host machine.
+In order to run the automatic BIBBOX-setup, you need to have Git, Vagrant and VirtualBox installed on your host machine.
 
-####If your host machine is a local PC or Mac, you can download those tools from their official websites:
+#### If your host machine is a local PC or Mac, you can download those tools from their official websites:
 
 <https://git-scm.com/downloads>
 
@@ -96,7 +96,7 @@ In order to run automatic BIBBOX-setup, you need to have Git, Vagrant and Virtua
 ![alt text](images/installation/virtualbox-download.jpg "VirtualBox")
 
 
-####If your host is a Linux machine or an Linux based remote server, you can instead install these tools with **apt-get**:
+#### If your host is a Linux machine or an Linux based remote server, you can instead install these tools with **apt-get**:
 
 `$ sudo apt-get update`
 
@@ -170,7 +170,7 @@ This is how it looks like in the file:
 vmname = "eb3kit"
 
 # Base url the bibbox kit (should match puppet config file)
-# default: "eb3kit.bibbox.org"
+# default: "demo.bibbox.org"
 bibboxbaseurl = "eb3kit.bibbox.org"
 
 # Number of assigned CPU cores
@@ -194,6 +194,7 @@ diskname = "301GB"
 # http_port default: 1080
 ip = "192.168.10.10"
 http_port = 1080
+# https_port = XXXX
 
 # Ports used for SSH connection
 # ssh_vagrant_port is only for Vagranbt internally
@@ -216,7 +217,7 @@ On Linux based systems you can edit this file with `nano environments\production
 
 | Parameter     | Description                                                                                      | Default           |
 |---------------|--------------------------------------------------------------------------------------------------|-------------------|
-| bibboxkit     | Name of the BIBBOX kit, currently only eB3kit is available.                                  	   | eB3Kit            |
+| bibboxkit     | Name of the BIBBOX kit, **currently only eB3kit is available!**                            	   | eB3Kit            |
 | bibboxbaseurl | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'Vagrantfile'. | eb3kit.bibbox.org |
 | serveradmin   | Mail address of the administrator.                                                               | admin@bibbox.org  |
 | db_user       | User of the Liferay database.                                                                    | liferay           |
@@ -245,11 +246,11 @@ You can now run the automated installation process with the following command:
 
 `vagrant up`
 
-BIBBOX will now automatically download all dependencies, set up an ***UBUNTU Trusty*** virtual machine, copy and symlink its contents and boot up the system.
+BIBBOX will automatically download all dependencies, set up an ***UBUNTU Trusty*** virtual machine, copy and symlink its contents and boot up the system.
 Please note, that this can take quite a while depending on internet connection speed and processing power of the host machine.
 
 Just leave your CLI open and do some other work while the installation is running.
-You will recognize it has finished, when you see a message saying "Applied catalog in xyz seconds" and you can write commands again in the terminal.
+You will recognize it has finished, when you see a message saying "Applied catalog in xyz seconds" and you can write commands in the terminal again.
 
 ![alt text](images/installation/installation-finished.png "Finished installation")
 
@@ -259,9 +260,12 @@ You will recognize it has finished, when you see a message saying "Applied catal
 After the installation has finished, BIBBOX will automatically start its internal configuration process and boot up the BIBBOX's Liferay portal.
 Please note, that this process will take several minutes!
 
-If you need more information on the Liferay boot process, you can view the log by logging into the virtual machine with `vagrant ssh` and tailing the log file with `sudo tail -f -n 200 /opt/liferay/tomcat-8.0.32/logs/catalina.out`.
+If you need more information on the Liferay boot process, you can view the log by connecting to the virtual machine with `vagrant ssh` and tailing the log file with `sudo tail -f -n 200 /opt/liferay/tomcat-8.0.32/logs/catalina.out`.
 
-After everything is finished, you can access your freshly installed BIBBOX in your browser at http://**192.168.10.10:18080** (replace the numbers with the IP port you configured before) on the host machine.
+***Please note, that you cannot install any apps inside the BIBBOX without using a domain name instead of IP and port! You should get a domain matching the bibboxbaseurl in your configuration.***
+
+After everything is finished, you can access your freshly installed BIBBOX in your browser at http://**192.168.10.10:1080** (replace the numbers with the IP port you configured before) on the host machine.
+
 
 ***In case you installed the BIBBOX on a remote server, you will need to do some additional configuration before you can access your BIBBOX from the web! See below:***
 
@@ -270,12 +274,11 @@ After everything is finished, you can access your freshly installed BIBBOX in yo
 If you have access to your hosting providers administration panel you can also rent a domain name like "bibbox.org" and point it to that address.
 
 
-To access your BIBBOX from the everywhere on the web, you need to map your host's IP address to the IP and port of your BIBBOX. We strongly recommend renting a domain like **bibbox.org** for easier access. If your hosting provider offers you an administration panel for managing domains and subdomains, you should use that to point to your BIBBOX. Otherwise you can do it yourself using this guide:
+If your hosting provider offers you an administration panel for managing domains and subdomains, you should use that to point to your BIBBOX. Otherwise you can do it yourself using this guide:
 
 1. On your host machine navigate to your apache configuration directory. On Linux base machines this defaults to **/etc/apache2/sites-enabled**.
 2. Create a file named **001-bibbox.conf**. On Linux based systems you can do this with `nano 001-bibbox.conf`.
-3. Create a file named **001-bibbox.conf**. On Linux based systems you can do this with `nano 001-bibbox.conf`.
-4. Copy this proxy configuration into the file, change the ServerName, ServerALias and the IP:Port combinations with your domain, the IP of the host machine and the port you configured for your virtual machine. Then save with **Control + O** and **Enter**.
+4. Copy this proxy configuration into the file, change the ServerName, ServerAlias and the IP:Port combinations with your domain, the IP of the host machine and the port you configured for your virtual machine. Then save with **Control + O** and **Enter**.
 
         <VirtualHost *:80>
             ServerName eb3kit.bibbox.org        # Replace this with your domain
@@ -302,31 +305,34 @@ To access your BIBBOX from the everywhere on the web, you need to map your host'
             ProxyPassReverse        /       	        http://212.232.25.224:1090/             # Replace the IP and port
         </VirtualHost>
 
-5. Now reload the Apache to make it recognize your changes by running `service apache2 reload`.
+5. Now reload Apache to make it recognize your changes by running `service apache2 reload`.
 6. You can now access the BIBBOX from anywhere in the web by calling your domain or IP:Port combination in the browser's address bar!
 
 ![alt text](images/installation/bibbox.jpg "Welcome to BIBBOX")
 
 
 
-## 5a.) local DNS configuration (local test without domain name)
+## 5b.) Local DNS configuration (local test without domain name)
 
-Iy you would like to test the BIBBOX System localy without a domain you can use smale DNS proxy (aka "Fake DNS") tool to simulate a domain address. 
+Iy you would like to test the BIBBOX system locally without a domain you can use a DNS proxy (aka. "Fake DNS") to simulate a domain address. 
 
-* Download the dnschef tool https://thesprawl.org/media/projects/dnschef-0.3.zip (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
+* Download the DNSCchef tool <https://thesprawl.org/media/projects/dnschef-0.3.zip> (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
 * Unzip the folder
-* Create a file called bibbox.ini, replace the **bibbox.local.domain** with the baseurl you selected and the ip address **192.168.10.10** with the ip your VM is accessable.
+* Create a file called **bibbox.ini**, replace the **bibbox.local.domain** with the **bibboxbaseurl** you selected and the ip address **192.168.10.10** with the IP your VM is accessible.
 
-                [A] # Queries for IPv4 address records
-                *.bibbox.local.domain=**192.168.10.10**
+        [A] # Queries for IPv4 address records
+        *.bibbox.local.domain=**192.168.10.10**
 
 * Run: **sudo ./dnschef.py --file bibbox.ini -q** in the folder
-        * If you get an error like:
-                Traceback (most recent call last):
-                File "./dnschef.py", line 39, in <module>
-                from dnslib import *
-                ImportError: No module named dnslib
-        * You need to add the requerd moduls to your system: sudo pip install dnslib
+    * If you get an error like:
+    
+            ```
+            Traceback (most recent call last):
+            File "./dnschef.py", line 39, in <module>
+            from dnslib import *
+            ImportError: No module named dnslib
+            ```
+        you need to add the required modules to your system: `sudo pip install dnslib`
 
 
 
@@ -345,27 +351,28 @@ If you want to make changes to the default configuration of the portal (e.g. cha
 
 ## 7.) Access via SSH
 
-In case you need to access the inside of the virtual machine over SSH, there are two ways to do so. If you are already on the host system, you can just run the command `vagrant ssh` from where cloned the GIT repository. You will then be logged in as user **vagrant** with password **vagrant** and home directory **/home/vagrant**. This user is a superuser, so you should not have any permission problems.
+In case you need to access the inside of the virtual machine over SSH, there are two ways to do so. If you are already on the host system, you can just run the command `vagrant ssh` from where you cloned the GIT repository. You will then be logged in as user **vagrant** with password **vagrant** and home directory **/home/vagrant**. This user is a superuser, so you should not have any permission problems.
 
-When your machine is hosted on a remote server, or you go in production, you will probably want to access the virtual machine from outside the host system as well. For this scenario, we have another user called **vmadmin** with default password **bibbox4ever** and home directoy **/home/vmadmin**. To connect via SSH open up a terminal on any computer with an active internet connection and enter `ssh vmadmin@xxx.xxx.xx.xxx -p 2231` replacing the **x** with the public IP of your host system and the port **2231** with the SSH port you configured during installation. When prompted for a password, just enter the password you set for the **vmadmin** user (default **bibbox4ever**).
+When your machine is hosted on a remote server, or you go in production, you will probably want to access the virtual machine from outside the host system as well. For this scenario, we have another user called **vmadmin** with default password **bibbox4ever** and home directoy **/home/vmadmin**. To connect via SSH open up a terminal on any computer with an active internet connection and enter `ssh vmadmin@xxx.xxx.xx.xxx -p 2231` replacing the **xxx.xxx.xx.xxx** with the public IP of your host system and the port **2231** with the SSH port you configured during installation. When prompted for a password, just enter the password you set for the **vmadmin** user (default **bibbox4ever**).
 
 
 ## 8.) Enjoy
 
 That's all, enjoy your BIBBOX!
 
+
 # Domain Migration
 
-if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your VM and make the following steps 
+If you want to migrate from **SOME.OLD.DOMAIN** to **YOUR.NEW.DOMAIN**, login into your VM and make the following steps 
 
-* stop the apache service
+* Stop the apache service
 
 `sudo service apache2 stop`
 
 
-* replace all SOME.OLD.DOMAIN  in the proxy files
+* Replace all **SOME.OLD.DOMAIN** in the proxy files
 
-`cd /etc/apache2'
+`cd /etc/apache2?`
 
 `sudo cp -r sites-available sites-available-back`
 
@@ -375,7 +382,7 @@ if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your 
 
 `sudo service apache2 start`
 
-* change to config for the portal
+* Change to config for the portal
 
 `cd /etc/bibbox`
 
@@ -385,14 +392,12 @@ if you want to migrate from SOME.OLD.DOMAIN to YOUR.NEW.DOMAIN, login into your 
 
 `sudo service liferay start`
 
-The following hints help you to migrate BIBBOX Apps:
+The following hints might help you to migrate BIBBOX Apps:
 
-**owncloud**
+**OwnCloud**
 
-add the YOUR.NEW.DOMAIN as trusted domain in your owncloud container
+Add the **YOUR.NEW.DOMAIN** as trusted domain in your OwnCloud container
 
 `sudo docker exec -it YOUR-OWNCLOUD-CONTAINER-NAME /bin/bash`
 
 `sed -i 's/SOME.OLD.DOMAIN/YOUR.NEW.DOMAIN/g' config/config.php`
-
-

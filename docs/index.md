@@ -9,7 +9,7 @@
 - Request an eB3kit instance for my institution (should include eligibility criteria according to B3Africa governance - cf. initial draft in Ethics and regulatory framework deliverable)
 - Select the fitting tools for my biobank
  
-## Use the BiBBoX demo
+## Use the BIBBOX demo
 
 - Online: http://demo.bibbox.org 
 - Install the demo locally (point to the installation chapters)
