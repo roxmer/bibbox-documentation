@@ -48,7 +48,7 @@ The following parameters are available to configure your BIBBOX. You can change 
 
 | Parameter     | Description                                                                                      | Default           |
 |---------------|--------------------------------------------------------------------------------------------------|-------------------|
-| bibboxkit     | Name of the BIBBOX kit, currently only eB3kit is available.                                  	   | eB3Kit            |
+| bibboxkit     | Name of the BIBBOX kit, **currently only eB3kit is available!**                             	   | eB3Kit            |
 | bibboxbaseurl | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'Vagrantfile'. | eb3kit.bibbox.org |
 | serveradmin   | Mail address of the administrator.                                                               | admin@bibbox.org  |
 | db_user       | User of the Liferay database.                                                                    | liferay           |
