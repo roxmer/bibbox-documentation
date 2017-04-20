@@ -314,14 +314,14 @@ If your hosting provider offers you an administration panel for managing domains
 
 ## 5b.) Local DNS configuration (local test without domain name)
 
-Iy you would like to test the BIBBOX system locally without a domain you can use a DNS proxy (aka. "Fake DNS") to simulate a domain address. 
+If you would like to test the BIBBOX System localy without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. 
 
 * Download the DNSCchef tool <https://thesprawl.org/media/projects/dnschef-0.3.zip> (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
 * Unzip the folder
 * Create a file called **bibbox.ini**, replace the **bibbox.local.domain** with the **bibboxbaseurl** you selected and the ip address **192.168.10.10** with the IP your VM is accessible.
 
         [A] # Queries for IPv4 address records
-        *.bibbox.local.domain=**192.168.10.10**
+        *.bibbox.local.domain=192.168.10.10
 
 * Run: **sudo ./dnschef.py --file bibbox.ini -q** in the folder
     * If you get an error like:
@@ -333,7 +333,20 @@ Iy you would like to test the BIBBOX system locally without a domain you can use
             ImportError: No module named dnslib
             ```
         you need to add the required modules to your system: `sudo pip install dnslib`
-
+    * Change your DNS Server to access the local configured dnschef (127.0.0.1)
+        
+        MAC:
+        
+        * Click on your "Apple" menu and choose "System Preferences".
+        * Double-Click on the “Network” icon.
+        * Select your Network Connection
+        * Select "Advanced"
+        * In the "DNS" Tab add 127.0.0.1
+        * "OK"
+        * "Apply"
+        
+    * As soon as DNSChef has started, you can access the BIBBOX with the **bibboxbaseurl** you selected through the browser's address bar!
+    * **Remember to change the DNS Server entry back when you stop dnschef!**
 
 
 ## 6.) Login and administration
