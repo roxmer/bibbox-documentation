@@ -326,12 +326,11 @@ If you would like to test the BIBBOX System localy without a domain you can use 
 * Run: **sudo ./dnschef.py --file bibbox.ini -q** in the folder
     * If you get an error like:
     
-            ```
             Traceback (most recent call last):
             File "./dnschef.py", line 39, in <module>
             from dnslib import *
             ImportError: No module named dnslib
-            ```
+            
         you need to add the required modules to your system: `sudo pip install dnslib`
     * Change your DNS Server to access the local configured dnschef (127.0.0.1)
         
