@@ -51,6 +51,7 @@ Installing and deleting applications in BIBBOX is quite simple. Of course it dep
 This folder is a copy of all github repositories listed in the eB3Kit.json file. The application-store (repository) is also located in this folder. The folder structure represents the same structure as the github version folder structure for easy access via the linked folder structure in the datastore (your.url/datastore). 
 
 As an example for the aPhenotips the structure looks like:
+
 | base-url        | application folder                                                                                | Version           |
 |------------------|--------------------------------------------------------------------------------------------------|-------------------|
 | /opt/bibbox/application-store | app-phenotips/blob | |
