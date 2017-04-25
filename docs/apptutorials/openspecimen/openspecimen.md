@@ -1,4 +1,4 @@
-## APP-OPENSPECIMEN Installation Instructions 
+##  Installation  
 
 * Install the application from BIBBOX store
 * Wait for installation to finish
@@ -16,7 +16,7 @@
 * Don't forget to change the default access credentials!
 
 
-## After the installation
+#### After the installation
 
 Have a nice ride with the new Admins youngtimer.
 
