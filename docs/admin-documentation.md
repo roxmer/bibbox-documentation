@@ -44,18 +44,22 @@ Installing and deleting applications in BIBBOX is quite simple. Of course it dep
 
 * That's pretty much all to know about installing applications in BIBBOX. You are now ready to set up your own toolset!
 
+## Folder Structure for Applications
+
+### /opt/bibbox/application-store
+
+This folder is a copy of all github repositories listed in the eB3Kit.json file. The application-store (repository) is also located in this folder. The folder structure represents the same structure as the github version folder structure for easy access via the linked folder structure in the datastore (your.url/datastore). 
+
+As an example for the aPhenotips the structure looks like:
+| base-url        | application folder                                                                                | Version           |
+|------------------|--------------------------------------------------------------------------------------------------|-------------------|
+| /opt/bibbox/application-store | app-phenotips/blob | |
+|  |  | V1-0-9 (taged version of the app) |
+|  |  | development (the master branch of the app) |
 
 
 
-## Under construction
-### How to start the portal
-### How to install an App
-- The App Store
-- App Dashboard / GUI
-- Working in the terminal
-### Export / Import / Backup of Apps
-
-### Troubleshooting
+## Troubleshooting
   - Login via SSH
   
         host:$ vagrant ssh
@@ -70,3 +74,15 @@ Installing and deleting applications in BIBBOX is quite simple. Of course it dep
   - Check the liferay log
 
           bibbox:$ tail -f /opt/liferay/tomcat-8.0.32/logs/catalina.out
+
+
+
+## Under construction
+### How to start the portal
+### How to install an App
+- The App Store
+- App Dashboard / GUI
+- Working in the terminal
+### Export / Import / Backup of Apps
+
+
