@@ -317,7 +317,7 @@ If your hosting provider offers you an administration panel for managing domains
 
 If you would like to test the BIBBOX System localy without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. You have two options for the IP address of the VM.
 
-1.) Your port 80 is available you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not alredy in use.
+### 1.) Your port 80 is available you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not alredy in use.
 
 * If you have set the http_port alredy to 80 when setting up the VM you can start with installing DNSCchef.
 
@@ -327,7 +327,7 @@ If you would like to test the BIBBOX System localy without a domain you can use 
 
         config.vm.network :forwarded_port, host: 80,  guest: 80
 
-2.) You can add an additional network adapter to the VM (you need an dhcp in your local network).
+### 2.) You can add an additional network adapter to the VM (you need an dhcp in your local network).
 
 * Add an Network Adapter via the Virtualbox Manager GUI
 ![alt text](images/installation/add-network-adapter-gui.png "Network Adapter in Virtualbox Manager GUI")
@@ -407,6 +407,9 @@ Start the VM again and login via SSH (vagrant ssh):
 
         # Check your IP address for the new network interface and use the ip for configuring DNSCchef (10.128.10.47)
         $ ifconfig
+            .
+            .
+            .
             eth2      Link encap:Ethernet  HWaddr 08:00:27:bf:e4:80  
                       inet addr:10.128.10.47  Bcast:10.128.10.255  Mask:255.255.255.0
                       inet6 addr: fe80::a00:27ff:febf:e480/64 Scope:Link
@@ -415,10 +418,13 @@ Start the VM again and login via SSH (vagrant ssh):
                       TX packets:256 errors:0 dropped:0 overruns:0 carrier:0
                       collisions:0 txqueuelen:1000 
                       RX bytes:17597 (17.5 KB)  TX bytes:20054 (20.0 KB)
-
+            .
+            .
+            .
 
 * Add new Network Interface with vagrant (todo)
 
+### Install DNSCchef
 * Download the DNSCchef tool <https://thesprawl.org/media/projects/dnschef-0.3.zip> (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
 * Unzip the folder
 * Create a file called **bibbox.ini**, replace the **bibbox.local.domain** with the **bibboxbaseurl** you selected and the ip address **192.168.10.10** with the IP your VM is accessible.
