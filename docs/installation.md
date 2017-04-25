@@ -276,13 +276,13 @@ If you have access to your hosting providers administration panel you can also r
 
 If your hosting provider offers you an administration panel for managing domains and subdomains, you should use that to point to your BIBBOX. Otherwise you can do it yourself using this guide:
 
-1. On your host machine navigate to your apache configuration directory. On Linux base machines this defaults to **/etc/apache2/sites-enabled**.
-2. Create a file named **001-bibbox.conf**. On Linux based systems you can do this with `nano 001-bibbox.conf`.
-4. Copy this proxy configuration into the file, change the ServerName, ServerAlias and the IP:Port combinations with your domain, the IP of the host machine and the port you configured for your virtual machine. Then save with **Control + O** and **Enter**.
+1. On your host machine navigate to your apache configuration directory. On Linux base machines this defaults to **/etc/apache2/sites-available**.
+2. Create a file named **005-your-bibboxbaseurl.conf**. On Linux based systems you can do this with `nano 005-your-bibboxbaseurl.conf`.
+4. Copy this proxy configuration into the file, change the ServerName, ServerAlias and the port you configured for your virtual machine. You should also change the name of the log files according to your vm name. Then save with **Control + O** and **Enter**.
 
         <VirtualHost *:80>
-            ServerName eb3kit.bibbox.org        # Replace this with your domain
-            ServerAlias *.eb3kit.bibbox.org     # Replace this with your domain
+            ServerName eb3kit.bibbox.org
+            ServerAlias *.eb3kit.bibbox.org
 
             <Proxy *>
                 Order deny,allow
@@ -299,14 +299,15 @@ If your hosting provider offers you an administration panel for managing domains
 
             ProxyRequests           Off
             ProxyPreserveHost On
-            ProxyPass               /api/kernels/       ws://212.232.25.224:1090/api/kernels/   # Replace the IP and port
-            ProxyPassReverse        /api/kernels/       ws://212.232.25.224:1090/api/kernels/   # Replace the IP and port
-            ProxyPass               /       	        http://212.232.25.224:1090/             # Replace the IP and port
-            ProxyPassReverse        /       	        http://212.232.25.224:1090/             # Replace the IP and port
+            ProxyPass               /api/kernels/       ws://127.0.0.1:1090/api/kernels/
+            ProxyPassReverse        /api/kernels/       ws://127.0.0.1:1090/api/kernels/
+            ProxyPass               /       	        http://127.0.0.1:1090/
+            ProxyPassReverse        /       	        http://127.0.0.1:1090/
         </VirtualHost>
 
-5. Now reload Apache to make it recognize your changes by running `service apache2 reload`.
-6. You can now access the BIBBOX from anywhere in the web by calling your domain or IP:Port combination in the browser's address bar!
+5. Now navigate to the **/etc/apache2/sites-enabled** directory and create a symbolic link to your new proxy file with `nano ln -s ../sites-available/005-your-bibboxbaseurl.conf`. 
+6. Next reload Apache to make it recognize your changes by running `service apache2 reload`.
+7. You can now access the BIBBOX from anywhere in the web by calling your domain or IP:Port combination in the browser's address bar!
 
 ![alt text](images/installation/bibbox.jpg "Welcome to BIBBOX")
 
