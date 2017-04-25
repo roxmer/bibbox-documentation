@@ -317,7 +317,7 @@ If your hosting provider offers you an administration panel for managing domains
 
 If you would like to test the BIBBOX System localy without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. You have two options for the IP address of the VM.
 
-### 1.) Your port 80 is available you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not alredy in use.
+### 5b.1) Your port 80 is available you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not alredy in use.
 
 * If you have set the http_port alredy to 80 when setting up the VM you can start with installing DNSCchef.
 
@@ -327,7 +327,7 @@ If you would like to test the BIBBOX System localy without a domain you can use 
 
         config.vm.network :forwarded_port, host: 80,  guest: 80
 
-### 2.) You can add an additional network adapter to the VM (you need an dhcp in your local network).
+### 5b.2) You can add an additional network adapter to the VM (you need an dhcp in your local network).
 
 * Add an Network Adapter via the Virtualbox Manager GUI
 ![alt text](images/installation/add-network-adapter-gui.png "Network Adapter in Virtualbox Manager GUI")
@@ -424,13 +424,13 @@ Start the VM again and login via SSH (vagrant ssh):
 
 * Add new Network Interface with vagrant (todo)
 
-### Install DNSCchef
+### 5b.3) Install DNSCchef
 * Download the DNSCchef tool <https://thesprawl.org/media/projects/dnschef-0.3.zip> (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
 * Unzip the folder
-* Create a file called **bibbox.ini**, replace the **bibbox.local.domain** with the **bibboxbaseurl** you selected and the ip address **192.168.10.10** with the IP your VM is accessible.
+* Create a file called **bibbox.ini**, replace the **bibbox.local.domain** with the **bibboxbaseurl** you selected and the ip address **10.128.10.47** with the IP your VM is accessible. (see for local system section above)
 
         [A] # Queries for IPv4 address records
-        *.bibbox.local.domain=192.168.10.10
+        *.bibbox.local.domain=10.128.10.47
 
 * Run: **sudo ./dnschef.py --file bibbox.ini -q** in the folder
     * If you get an error like:
