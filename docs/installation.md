@@ -305,7 +305,7 @@ If your hosting provider offers you an administration panel for managing domains
             ProxyPassReverse        /       	        http://127.0.0.1:1090/
         </VirtualHost>
 
-5. Now navigate to the **/etc/apache2/sites-enabled** directory and create a symbolic link to your new proxy file with `nano ln -s ../sites-available/005-your-bibboxbaseurl.conf`. 
+5. Now navigate to the **/etc/apache2/sites-enabled** directory and create a symbolic link to your new proxy file with `ln -s ../sites-available/005-your-bibboxbaseurl.conf`. 
 6. Next reload Apache to make it recognize your changes by running `service apache2 reload`.
 7. You can now access the BIBBOX from anywhere in the web by calling your domain in the browser's address bar!
 
