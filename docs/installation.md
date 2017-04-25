@@ -44,7 +44,7 @@ The following parameters are available to configure your virtual machine. You ca
 
 ### BIBBOX configuration
 
-The following parameters are available to configure your BIBBOX. You can change them in `environments\production\manisfests\config.pp`:
+The following parameters are available to configure your BIBBOX. You can change them in `environments/production/manifests/config.pp`:
 
 | Parameter     | Description                                                                                      | Default           |
 |---------------|--------------------------------------------------------------------------------------------------|-------------------|
@@ -207,8 +207,8 @@ ssh_port = 2231
 
 #### BIBBOX configuration
 
-The following parameters are available to configure your BIBBOX. You can change them in `environments\production\manisfests\config.pp`.
-On Linux based systems you can edit this file with `nano environments\production\manisfests\config.pp` and save it with **Control + O** and then **Enter** after you are done.
+The following parameters are available to configure your BIBBOX. You can change them in `environments/production/manifests/config.pp`.
+On Linux based systems you can edit this file with `nano environments/production/manifests/config.pp` and save it with **Control + O** and then **Enter** after you are done.
 
 **Required parameters:**
 
