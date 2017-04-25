@@ -307,7 +307,7 @@ If your hosting provider offers you an administration panel for managing domains
 
 5. Now navigate to the **/etc/apache2/sites-enabled** directory and create a symbolic link to your new proxy file with `nano ln -s ../sites-available/005-your-bibboxbaseurl.conf`. 
 6. Next reload Apache to make it recognize your changes by running `service apache2 reload`.
-7. You can now access the BIBBOX from anywhere in the web by calling your domain or IP:Port combination in the browser's address bar!
+7. You can now access the BIBBOX from anywhere in the web by calling your domain in the browser's address bar!
 
 ![alt text](images/installation/bibbox.jpg "Welcome to BIBBOX")
 
