@@ -52,11 +52,11 @@ This folder is a copy of all github repositories listed in the eB3Kit.json file.
 
 As an example for the aPhenotips the structure looks like:
 
-| base-url        | application folder         | Version           |
-|-----------------|----------------------------|-------------------|
-| /opt/bibbox/application-store | app-phenotips/blob | |
-|  |  | V1-0-9 (taged version of the app) |
-|  |  | development (the master branch of the app) |
+| base-url        | application folder         | Version           | Decription        |
+|-----------------|----------------------------|-------------------|-------------------|
+| /opt/bibbox/application-store/ | app-phenotips/blob/ | |
+|  |  | V1-0-9/ | taged version of the app |
+|  |  | development/ | the master branch of the app |
 
 
 
