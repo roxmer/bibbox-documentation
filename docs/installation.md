@@ -315,7 +315,109 @@ If your hosting provider offers you an administration panel for managing domains
 
 ## 5b.) Local DNS configuration (local test without domain name)
 
-If you would like to test the BIBBOX System localy without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. 
+If you would like to test the BIBBOX System localy without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. You have two options for the IP address of the VM.
+
+1.) Your port 80 is available you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not alredy in use.
+
+* If you have set the http_port alredy to 80 when setting up the VM you can start with installing DNSCchef.
+
+* If you cahnged the http_port after you alredy provicioned the VM you can change the port and run a vagrant reload --provision
+
+* You can also add a new port forwarded rule in the config for port 80 
+
+        config.vm.network :forwarded_port, host: 80,  guest: 80
+
+2.) You can add an additional network adapter to the VM (you need an dhcp in your local network).
+
+* Add an Network Adapter via the Virtualbox Manager GUI
+![alt text](images/installation/add-network-adapter-gui.png "Network Adapter in Virtualbox Manager GUI")
+
+* Add an Network Adapter via command line manager (add NIC 3 with a Bridged Interface). For limitations an Virtualbox Bridged networks for your operation system take a look at [here.](https://www.virtualbox.org/manual/ch06.html#network_bridged)
+
+        # List your VMs
+        $ VBoxManage list vms
+            "eb3kit" {e1d37b44-35ee-4019-aaa3-1b393d7605ec}
+        # Get the used Network adapters (replace eB3Kit with your vmname)
+        $ VBoxManage showvminfo "eB3Kit" | grep NIC
+            NIC 1:           MAC: 080027A4A694, Attachment: NAT, Cable connected: on, Trace: off (file: none), Type: 82540EM, Reported speed: 0 Mbps, Boot priority: 0, Promisc Policy: deny, Bandwidth group: none
+            NIC 1 Settings:  MTU: 0, Socket (send: 64, receive: 64), TCP Window (send:64, receive: 64)
+            NIC 1 Rule(0):   name = tcp1080, protocol = tcp, host ip = , host port = 1080, guest ip = , guest port = 80
+            NIC 1 Rule(1):   name = tcp2231, protocol = tcp, host ip = , host port = 2231, guest ip = , guest port = 22
+            NIC 2:           MAC: 080027456CD6, Attachment: Host-only Interface 'vboxnet1', Cable connected: on, Trace: off (file: none), Type: 82540EM, Reported speed: 0 Mbps, Boot priority: 0, Promisc Policy: deny, Bandwidth group: none
+            NIC 3:           disabled
+            .
+            .
+            .
+        # Add the Network adapters NIC 3
+        $ VBoxManage modifyvm "eB3Kit" --nic3 bridged
+        # Select the host interface 
+        $ VBoxManage list bridgedifs
+            Name:            enp3s0
+            GUID:            33706e65-3073-4000-8000-08606e73cdec
+            DHCP:            Disabled
+            IPAddress:       10.128.10.43
+            NetworkMask:     255.255.255.0
+            IPV6Address:     fe80:0000:0000:0000:e6a9:b6a6:8604:85b8
+            IPV6NetworkMaskPrefixLength: 64
+            HardwareAddress: 08:60:6e:73:cd:ec
+            MediumType:      Ethernet
+            Status:          Up
+            VBoxNetworkName: HostInterfaceNetworking-enp3s0
+
+            Name:            docker0
+            GUID:            6b636f64-7265-4030-8000-0242bbcc18a2
+            DHCP:            Disabled
+            IPAddress:       172.17.0.1
+            NetworkMask:     255.255.0.0
+            IPV6Address:     
+            IPV6NetworkMaskPrefixLength: 0
+            HardwareAddress: 02:42:bb:cc:18:a2
+            MediumType:      Ethernet
+            Status:          Up
+            VBoxNetworkName: HostInterfaceNetworking-docker0
+        # Set the host interface for the Bridged Interface (in this example enp3s0)
+        $ VBoxManage modifyvm "eB3Kit" --bridgeadapter3 enp3s0
+        # Check configuration for NIC 3
+        $ VBoxManage showvminfo "eb3kit" | grep "NIC 3"
+            NIC 3:           MAC: 080027864F64, Attachment: Bridged Interface 'enp3s0', Cable connected: on, Trace: off (file: none), Type: 82540EM, Reported speed: 0 Mbps, Boot priority: 0, Promisc Policy: deny, Bandwidth group: none
+
+Start the VM again and login via SSH (vagrant ssh):
+
+        # Check the Network interfaces you should have a new like this below
+        $ ifconfig -a
+            .
+            .
+            .
+            eth2      Link encap:Ethernet  HWaddr 08:00:27:0a:07:84  
+                      BROADCAST MULTICAST  MTU:1500  Metric:1
+                      RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+                      TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+                      collisions:0 txqueuelen:1000 
+                      RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+            .
+            .
+            .
+        # Setup the interface for dhcp configuration
+        $ (sudo) vi /etc/network/interfaces
+        # Add at the end of the file
+          auto eth2
+          iface eth2 inet dhcp
+        # Restart the system
+        $ (sudo) reboot
+
+        # Check your IP address for the new network interface and use the ip for configuring DNSCchef (10.128.10.47)
+        $ ifconfig
+            eth2      Link encap:Ethernet  HWaddr 08:00:27:bf:e4:80  
+                      inet addr:10.128.10.47  Bcast:10.128.10.255  Mask:255.255.255.0
+                      inet6 addr: fe80::a00:27ff:febf:e480/64 Scope:Link
+                      UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+                      RX packets:236 errors:0 dropped:0 overruns:0 frame:0
+                      TX packets:256 errors:0 dropped:0 overruns:0 carrier:0
+                      collisions:0 txqueuelen:1000 
+                      RX bytes:17597 (17.5 KB)  TX bytes:20054 (20.0 KB)
+
+
+* Add new Network Interface with vagrant (todo)
 
 * Download the DNSCchef tool <https://thesprawl.org/media/projects/dnschef-0.3.zip> (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
 * Unzip the folder
