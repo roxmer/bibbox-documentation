@@ -122,11 +122,11 @@ Now navigate to the directory using this command:
 
 From there you can clone the repository <https://github.com/bibbox/kit-eb3kit.git> either with the GitHub client for Windows and Mac <https://desktop.github.com/> or simply with the following command:
 
-`git clone https://github.com/bibbox/kit-eb3kit.git your-kit-name`
+`git clone https://github.com/bibbox/kit-eb3kit.git your-bibbox-name`
 
 Once the repository has finished cloning, navigate into it by using the following command:
 
-`cd your-kit-name`
+`cd your-bibbox-name`
 
 
 ## 3.) VM and BIBBOX configuration
