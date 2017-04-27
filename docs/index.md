@@ -2,12 +2,18 @@
 For full documentation visit <http://b3africa.org>.
 
 ## What is BiBBox / eB3kit?
-In this section
+
+
 * [The eB3Kit - From a user’s perspective](#users-perspective)
+
     1. [An informatics platform](#informatics-platform)
+    
     2. [An ethical and legal framework](#ethical-legal-framework)
+    
     3. [A training component](#training-component)
+    
 * [BiBBoX is the eB3Kit’s operating system (OS)](#operating-system)
+
 * [More on the eB3Kit – From the IT perspective](#more)
 
 
