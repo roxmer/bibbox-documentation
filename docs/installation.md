@@ -1,6 +1,29 @@
 # Requirements
 
-Requirements
+### Hardware
+
+**Minimum**
+
+The following will show you the minimum requirements of the BIBBOX virtual machine. Please note, that installing any applications within BIBBOX will require additional resources!
+
+* CPU cores: 1
+* Memory: 4096 MB
+* Disk space: 20 GB
+
+**Recommended for Development**
+
+For development purposes we recommend a virtual machine with the following specifications:
+
+* CPU cores: 4
+* Memory: 8192 MB
+* Disk space: 100 GB
+
+**Production**
+
+For production, please calculate the additional resources you will need, depending on the applications you are going to install within the BIBBOX.
+
+
+### Software
 
 * Download and install Git -> <https://git-scm.com/>
 * Download and install Vagrant -> <https://www.vagrantup.com>
