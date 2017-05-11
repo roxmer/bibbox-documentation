@@ -16,8 +16,21 @@
 * Don't forget to change the default access credentials!
 
 
-<h3>After the installation</h3>
+<h3>First Steps/h3>
 
-Have a nice ride with the new Admins youngtimer.
+Openspecimen provides a community and an enterprose version. With the community version it is possible to organsie simple collections and user data export/import features. The enterprise version provides additional modules for dashboards and simple data entry. 
 
-![FINAL](install-screen-final.jpg)
+
+Before you can add a Specimen, you have to make some configurations for a study
+
+* Define a Collection Protocol
+  * Setting up consents
+  * Adding Events 
+  * Define Specimen Requirements
+  * Label Formats and Print Settings
+  
+For a deatiled description see [https://openspecimen.atlassian.net/wiki/display/CAT/Collection+Protocol#CollectionProtocol-SpecimenCentricCollectionProtocol] or wath the video here: []
+
+
+Experienced programmers can easy write their own modules and/or user the REST Interface by looking at the source code in Github or even write a own plugin [https://openspecimen.atlassian.net/wiki/pages/viewpage.action?pageId=31064072]
+
