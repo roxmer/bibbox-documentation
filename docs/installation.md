@@ -457,15 +457,17 @@ Start the VM again and login via SSH (vagrant ssh):
         *.bibbox.local.domain=192.168.10.10
 
 * Run: **sudo python dnschef.py --file bibbox.ini -q** in the folder
-    * If you get an error similar to this:
     
-            Traceback (most recent call last):
-            File "dnschef.py", line 39, in <module>
-            from dnslib import *
-            ImportError: No module named dnslib
+    If you get an error similar to this:
+    
+        Traceback (most recent call last):
+        File "dnschef.py", line 39, in <module>
+        from dnslib import *
+        ImportError: No module named dnslib
             
-        you need to add the required modules to your system: `sudo pip install dnslib`. (Could also be **IPy** or another module) 
-    * Also change your DNS Server to access the locally configured DNSChef (127.0.0.1)! (You temporarily lose internet access in this process, but the connection will be back as soon as you run DNSChef)
+    you need to add the required modules to your system: `sudo pip install dnslib`. (Could also be **IPy** or another module) 
+    
+    Also change your DNS Server to access the locally configured DNSChef (127.0.0.1)! (You temporarily lose internet access in this process, but the connection will be back as soon as you run DNSChef)
         
         MAC:
         
@@ -477,8 +479,8 @@ Start the VM again and login via SSH (vagrant ssh):
         * "OK"
         * "Apply"
         
-    * As soon as DNSChef has started, you can access the BIBBOX with the **bibboxbaseurl** you selected through the browser's address bar! (Only on the local machine)
-    * **Remember to change the DNS Server entry back when you stop DNSChef!**
+* As soon as DNSChef has started, you can access the BIBBOX with the **bibboxbaseurl** you selected through the browser's address bar! (Only on the local machine)
+* **Remember to change the DNS Server entry back when you stop DNSChef!**
     
 * If your local network has a firewall and you cannot access the internet while using DNSChef, try running DNSChef with an additional parameter `--nameservers=YOUR_DNS_IP` like so:
 
