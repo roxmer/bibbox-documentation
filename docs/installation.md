@@ -59,11 +59,11 @@ The following parameters are available to configure your virtual machine. You ca
 | disksize         | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	      |
 | diskname         | The disk file will be named "disk-**diskname**.vdi".                                             | 301GB             |
 | ip               | The static IP to your BIBBOX within the host's network.                                          | 192.168.10.10     |
-| http_port        | The port to your BIBBOX within the host's network.                                               | 1080              |
+| http_port        | The port to your BIBBOX within the host's network.                                               | 80                |
 | ssh_vagrant_port | Port for SSH access used internally by Vagrant.                                                  | 2230              |
 | ssh_port         | Port used for SSH access from outside the host machine.                                          | 2231              |
 
-[1]: If you have a domain pleace follow step 5a). If you are testing it localy without a domain please follow step 5b).
+**If you have a domain please follow step 5a). If you are testing it localy without a domain please follow step 5b).**
 
 ### BIBBOX configuration
 
@@ -90,7 +90,7 @@ If you're already familiar with the BIBBOX installation process and only need a 
 5. Run the setup by executing the command `vagrant up` from your base directory.
 6. Wait while your BIBBOX is being installed (can take quite long, depending on internet connection)
 7. Configure your host's proxy or DNS to redirect to the BIBBOX VM at **http://bibboxbaseurl**, where **bibboxbaseurl** is your the domain or subdomain BIBBOX is running on, eg. **demo.bibbox.org**.
-   You can also access the BIBBOX by IP and port **<http://192.168.10.10:1080>** (replace IP and port with your custom configuration), but **in order to install any applications, you will need a domain!** If you don't have one, we recommend DNSChef for faking one.
+   You can also access the BIBBOX by IP and port **<http://192.168.10.10:80>** (replace IP and port with your custom configuration), but **in order to install any applications, you will need a domain!** If you don't have one, we recommend DNSChef for faking one.
 8. You can log in to your BIBBOX with the users ***bibboxadmin***, ***admin***, ***pi***, ***curator*** and ***operator***. For all users the default password is ***graz2017***.
 9. To configure the liferay portal of your BIBBOX, log in as user ***bibboxadmin***.
 
@@ -181,7 +181,7 @@ On Linux based systems you can edit this file with `nano Vagrantfile` and save i
 | disksize         | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	      |
 | diskname         | The disk file will be named "disk-**diskname**.vdi".                                             | 301GB             |
 | ip               | The static IP to your BIBBOX within the host's network.                                          | 192.168.10.10     |
-| http_port        | The port to your BIBBOX within the host's network.                                               | 1080              |
+| http_port        | The port to your BIBBOX within the host's network.                                               | 80                |
 | ssh_vagrant_port | Port for SSH access used internally by Vagrant.                                                  | 2230              |
 | ssh_port         | Port used for SSH access from outside the host machine.                                          | 2231              |
 
@@ -216,7 +216,7 @@ diskname = "301GB"
 # ip default: "192.168.10.10"
 # http_port default: 1080
 ip = "192.168.10.10"
-http_port = 1080
+http_port = 80
 # https_port = XXXX
 
 # Ports used for SSH connection
@@ -322,10 +322,10 @@ If your hosting provider offers you an administration panel for managing domains
 
             ProxyRequests           Off
             ProxyPreserveHost On
-            ProxyPass               /api/kernels/       ws://127.0.0.1:1090/api/kernels/
-            ProxyPassReverse        /api/kernels/       ws://127.0.0.1:1090/api/kernels/
-            ProxyPass               /       	        http://127.0.0.1:1090/
-            ProxyPassReverse        /       	        http://127.0.0.1:1090/
+            ProxyPass               /api/kernels/       ws://127.0.0.1:80/api/kernels/
+            ProxyPassReverse        /api/kernels/       ws://127.0.0.1:80/api/kernels/
+            ProxyPass               /       	        http://127.0.0.1:80/
+            ProxyPassReverse        /       	        http://127.0.0.1:80/
         </VirtualHost>
 
 5. Now navigate to the **/etc/apache2/sites-enabled** directory and create a symbolic link to your new proxy file with `ln -s ../sites-available/005-your-bibboxbaseurl.conf`. 
@@ -338,17 +338,18 @@ If your hosting provider offers you an administration panel for managing domains
 
 ## 5b.) Local DNS configuration (local test without domain name)
 
-If you would like to test the BIBBOX System localy without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. You have two options for the IP address of the VM.
+If you would like to test the BIBBOX System locally without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. You have two options for the IP address of the VM.
 
-### 5b.1) Your port 80 is available you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not alredy in use.
+### 5b.1) If port 80 is available on your machine, you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not already in use.
 
-* If you have set the http_port alredy to 80 when setting up the VM you can start with installing DNSCchef.
+* If you have set the http_port already to 80 when you created the VM, you can start with continue with point **5b.3**.
 
-* If you cahnged the http_port after you alredy provicioned the VM you can change the port and run a vagrant reload --provision
+* If you changed the http_port after you already built the VM you can run `vagrant reload --provision` to update the machine.
 
-* You can also add a new port forwarded rule in the config for port 80 
+* You can also add an additional port forwarding rule in the config for port 80 
 
         config.vm.network :forwarded_port, host: 80,  guest: 80
+        
 
 ### 5b.2) You can add an additional network adapter to the VM (you need an dhcp in your local network).
 
@@ -448,23 +449,23 @@ Start the VM again and login via SSH (vagrant ssh):
 * Add new Network Interface with vagrant (todo)
 
 ### 5b.3) Install DNSCchef
-* Download the DNSCchef tool <https://thesprawl.org/media/projects/dnschef-0.3.zip> (Depending on your browser you have to confirm the certificate or add the certificate to an exception list)
+* Download the DNSChef tool <https://thesprawl.org/media/projects/dnschef-0.3.zip> (Depending on your browser you have to confirm the certificate or add the certificate to an exception list).
 * Unzip the folder
-* Create a file called **bibbox.ini**, replace the **bibbox.local.domain** with the **bibboxbaseurl** you selected and the ip address **10.128.10.47** with the IP your VM is accessible. (see for local system section above)
+* Create a file called **bibbox.ini**, replace the **bibbox.local.domain** with the **bibboxbaseurl** you selected and the ip address **192.168.10.10** with the IP your VM is accessible. (see for local system section above)
 
         [A] # Queries for IPv4 address records
-        *.bibbox.local.domain=10.128.10.47
+        *.bibbox.local.domain=192.168.10.10
 
-* Run: **sudo ./dnschef.py --file bibbox.ini -q** in the folder
-    * If you get an error like:
+* Run: **sudo python dnschef.py --file bibbox.ini -q** in the folder
+    * If you get an error similar to this:
     
             Traceback (most recent call last):
-            File "./dnschef.py", line 39, in <module>
+            File "dnschef.py", line 39, in <module>
             from dnslib import *
             ImportError: No module named dnslib
             
-        you need to add the required modules to your system: `sudo pip install dnslib`
-    * Change your DNS Server to access the local configured dnschef (127.0.0.1)
+        you need to add the required modules to your system: `sudo pip install dnslib`. (Could also be **IPy** or another module) 
+    * Also change your DNS Server to access the locally configured DNSChef (127.0.0.1)! (You temporarily lose internet access in this process, but the connection will be back as soon as you run DNSChef)
         
         MAC:
         
@@ -472,12 +473,18 @@ Start the VM again and login via SSH (vagrant ssh):
         * Double-Click on the “Network” icon.
         * Select your Network Connection
         * Select "Advanced"
-        * In the "DNS" Tab add 127.0.0.1
+        * In the "DNS" Tab add 127.0.0.1 (this overrides the default values)
         * "OK"
         * "Apply"
         
-    * As soon as DNSChef has started, you can access the BIBBOX with the **bibboxbaseurl** you selected through the browser's address bar!
-    * **Remember to change the DNS Server entry back when you stop dnschef!**
+    * As soon as DNSChef has started, you can access the BIBBOX with the **bibboxbaseurl** you selected through the browser's address bar! (Only on the local machine)
+    * **Remember to change the DNS Server entry back when you stop DNSChef!**
+    
+* If your local network has a firewall and you cannot access the internet while using DNSChef, try running DNSChef with an additional parameter `--nameservers=YOUR_DNS_IP` like so:
+
+        sudo python dnschef.py --file bibbox.ini -q --nameservers=XXX.XXX.XX.XX
+        
+    Replace the **XXX.XXX.XX.XX** with the default IP in your DNS settings, the one you have overridden with **127.0.0.1** in the step before this one. 
 
 
 ## 6.) Login and administration
