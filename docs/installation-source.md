@@ -278,7 +278,7 @@ You will recognize it has finished, when you see a message saying "Applied catal
 ![alt text](images/installation/installation-finished.png "Finished installation")
 
 
-## 5a.) Proxy, DNS configuration (with domain name)
+## 5a.) Proxy, DNS configuration on server (with domain name)
 
 After the installation has finished, BIBBOX will automatically start its internal configuration process and boot up the BIBBOX's Liferay portal.
 Please note, that this process will take several minutes!
@@ -336,11 +336,34 @@ If your hosting provider offers you an administration panel for managing domains
 
 
 
-## 5b.) Local DNS configuration (local test without domain name)
+## 5b.) Local testing within the virtual machine (using UBUNTU GUI with fake domain)
 
-If you would like to test the BIBBOX System locally without a domain you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. You have two options for the IP address of the VM.
+The simplest way to try out a BIBBOX locally and without a DNS server and domain name, is to install a GUI for the machine and access the BIBBOX directly from within.
+For this purpose, a small fake DNS tool named DNSmasq can be used and the BIBBOX then accessed using the browser from within the virtual machine.
 
-### 5b.1) If port 80 is available on your machine, you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not already in use.
+In order to set up such a test BIBBOX, simply follow these steps:
+ 
+* Run from terminal: `sudo apt-get update`
+* Run from terminal: `sudo apt-get install ubuntu-desktop`
+* If you are asked to confirm the installation, do so by entering `Y` and press ENTER
+* If you are asked for anything else with a default value, just press ENTER
+* Run from terminal: `sudo apt-get install dnsmasq`
+* Run from terminal: `sudo passwd vagrant`
+* Type and confirm a password of your choice (e.g. `bibbox4ever`)
+* Run from terminal: `sudo nano /etc/dnsmasq.conf`
+* Add this line: `address=/bibbox.local.test/192.168.10.10`. If you built your BIBBOX with Vagrant, replace the url and IP with the ones you used in Vagrantfile.
+* Save with CTRL + O and ENTER and exit the editor with CTRL + X
+* Run from terminal: `sudo /etc/init.d/dnsmasq restart`
+* Open up your BIBBOX virtual machine from VirtualBox GUI
+* Log in with user **vagrant** and your password
+* Access your BIBBOX from a browser like Firefox with URL `bibbox.local.test` or whatever you set in Vagrantfile
+* Directly after the start of the virtual machine, it can take some minutes before the BIBBOX has fully loaded
+
+## 5c.) Local testing from outside the virtual machine (using fake DNS and domain name)
+
+If you would like to test the BIBBOX System locally, from outside the virtual machine and without a domain, you can use a DNS proxy (aka "Fake DNS") tool to simulate a domain address. You have two options for the IP address of the VM.
+
+### 5c.1) If port 80 is available on your machine, you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not already in use.
 
 * If you have set the http_port already to 80 when you created the VM, you can start with continue with point **5b.3**.
 
@@ -351,7 +374,7 @@ If you would like to test the BIBBOX System locally without a domain you can use
         config.vm.network :forwarded_port, host: 80,  guest: 80
         
 
-### 5b.2) You can add an additional network adapter to the VM (you need an dhcp in your local network).
+### 5c.2) You can add an additional network adapter to the VM (you need an dhcp in your local network).
 
 * Add an Network Adapter via the Virtualbox Manager GUI
 ![alt text](images/installation/add-network-adapter-gui.png "Network Adapter in Virtualbox Manager GUI")
@@ -448,7 +471,7 @@ Start the VM again and login via SSH (vagrant ssh):
 
 * Add new Network Interface with vagrant (todo)
 
-### 5b.3) Install DNSCchef
+### 5c.3) Install DNSCchef
 * Download the DNSChef tool <https://thesprawl.org/media/projects/dnschef-0.3.zip> (Depending on your browser you have to confirm the certificate or add the certificate to an exception list).
 * Unzip the folder
 * Create a file called **bibbox.ini**, replace the **bibbox.local.domain** with the **bibboxbaseurl** you selected and the ip address **192.168.10.10** with the IP your VM is accessible. (see for local system section above)

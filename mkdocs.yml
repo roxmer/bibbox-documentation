@@ -3,7 +3,7 @@ site_name: BIBBOX
 pages:
     - Introduction: index.md
     - Ethical Framework: ethics.md
-    - Installation: installation.md
+    - Installation from source: installation-source.md
     - Install Apps: admin-documentation.md
     - Create Apps: app-creators-manual.md
     - Intstall Apps:
