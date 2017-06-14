@@ -56,14 +56,14 @@ The following parameters are available to configure your virtual machine. You ca
 | bibboxbaseurl    | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'. <sup>1</sup>                                                                       | eb3kit.bibbox.org |
 | cpus             | Number of CPU cores assigned to the virtual machine.                                             | admin@bibbox.org  |
 | memory           | Total amount of memory in MB (RAM) available to the virtual machine.                             | 8192              |
-| disksize         | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	      |
+| disksize         | Amount of additional disk space in GB (hard drive). Needs change in `resources/add_disk.sh`.     | 301      	      |
 | diskname         | The disk file will be named "disk-**diskname**.vdi".                                             | 301GB             |
 | ip               | The static IP to your BIBBOX within the host's network.                                          | 192.168.10.10     |
 | http_port        | The port to your BIBBOX within the host's network.                                               | 80                |
 | ssh_vagrant_port | Port for SSH access used internally by Vagrant.                                                  | 2230              |
 | ssh_port         | Port used for SSH access from outside the host machine.                                          | 2231              |
 
-**If you have a domain please follow step 5a). If you are testing it localy without a domain please follow step 5b).**
+**If you have a domain please follow step 5a). If you are testing it locally without a domain please follow step 5b) or 5c).**
 
 ### BIBBOX configuration
 
@@ -178,7 +178,7 @@ On Linux based systems you can edit this file with `nano Vagrantfile` and save i
 | bibboxbaseurl    | Base url of your BIBBOX installation. Needs to match 'bibboxbaseurl' parameter in 'environments\production\manisfests\config.pp'.                                                                       | eb3kit.bibbox.org |
 | cpus             | Number of CPU cores assigned to the virtual machine.                                             | admin@bibbox.org  |
 | memory           | Total amount of memory in MB (RAM) available to the virtual machine.                             | 8192              |
-| disksize         | Amount of additional disk space in MB (hard drive).                                              | 301 * 1024 	      |
+| disksize         | Amount of additional disk space in GB (hard drive). Needs change in `resources/add_disk.sh`.     | 301               |
 | diskname         | The disk file will be named "disk-**diskname**.vdi".                                             | 301GB             |
 | ip               | The static IP to your BIBBOX within the host's network.                                          | 192.168.10.10     |
 | http_port        | The port to your BIBBOX within the host's network.                                               | 80                |
@@ -189,43 +189,48 @@ This is how it looks like in the file:
 
 ```
 # Name of the virtual machine
-# default: "eb3kit"
-vmname = "eb3kit"
+  # default: "eb3kit"
+  vmname = "eb3kit"
+  
+  # Base url the bibbox kit (should match puppet config file)
+  # default: "eb3kit.bibbox.org"
+  bibboxbaseurl = "eb3kit.bibbox.org"
+  
+  # Number of assigned CPU cores
+  # default: 4
+  cpus = 4
+  
+  # Total amount of memory in MB (RAM)
+  # default: "8192" (8GB)
+  memory = "8192"
+  
+  # Amount of additional disk space in GB (hard drive)
+  #
+  # IMPORTANT IF YOU CHANGE THE DEFAULT VALUE!!!
+  #  - Also replace '300' with your disksize value - 1 in "resources/add_disk.sh"
+  #  - So if you choose 100 as disksize, replace 300 with 99 in "resources/add_disk.sh"
+  #
+  # default: 301
+  disksize = 301
+  
+  # Name of the disk
+  # default "301GB"
+  diskname = "301GB"
 
-# Base url the bibbox kit (should match puppet config file)
-# default: "demo.bibbox.org"
-bibboxbaseurl = "eb3kit.bibbox.org"
-
-# Number of assigned CPU cores
-# default: 4
-cpus = 4
-
-# Total amount of memory in MB (RAM)
-# default: "8192" (8GB)
-memory = "8192"
-
-# Amount of additional disk space in MB (hard drive)
-# default: 301 * 1024 (301GB)
-disksize = 301 * 1024
-
-# Name of the disk
-# default "301GB"
-diskname = "301GB"
-
-# Static IP and port within the host's network
-# ip default: "192.168.10.10"
-# http_port default: 1080
-ip = "192.168.10.10"
-http_port = 80
-# https_port = XXXX
-
-# Ports used for SSH connection
-# ssh_vagrant_port is only for Vagranbt internally
-# default: 2230
-# ssh_port is used to connect from outside
-# default: 2231
-ssh_vagrant_port = 2230
-ssh_port = 2231
+  # Static IP and port within the host's network
+  # ip default: "192.168.10.10"
+  # http_port default: 80
+  ip = "192.168.10.10"
+  http_port = 80
+  # https_port = XXXX
+  
+  # Ports used for SSH connection
+  # ssh_vagrant_port is only for Vagrant internally
+  # default: 2230
+  # ssh_port is used to connect from outside
+  # default: 2231
+  ssh_vagrant_port = 2230
+  ssh_port = 2231
 ```
 
 #### BIBBOX configuration
@@ -365,7 +370,7 @@ If you would like to test the BIBBOX System locally, from outside the virtual ma
 
 ### 5c.1) If port 80 is available on your machine, you can have the "http_port" or an additional port forwarded to the VM. You need to check that port 80 is not already in use.
 
-* If you have set the http_port already to 80 when you created the VM, you can start with continue with point **5b.3**.
+* If you have set the http_port already to 80 when you created the VM, you can start with continue with point **5c.3**.
 
 * If you changed the http_port after you already built the VM you can run `vagrant reload --provision` to update the machine.
 
