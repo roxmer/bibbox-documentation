@@ -29,8 +29,7 @@ Before you can add a Specimen, you have to make some configurations for a study
   * Define Specimen Requirements
   * Label Formats and Print Settings
   
-For a deatiled description see [https://openspecimen.atlassian.net/wiki/display/CAT/Collection+Protocol#CollectionProtocol-SpecimenCentricCollectionProtocol] or wath the video here: []
+For a deatiled description see [How to Create a Collection Protokol](https://openspecimen.atlassian.net/wiki/display/CAT/Collection+Protocol#CollectionProtocol-SpecimenCentricCollectionProtocol) or watch some of the [tutorial videos](https://www.youtube.com/watch?v=R-QpuAzvkO0&list=PLLFI_6gCd35OsTcZ_FtHVyQooIOR9w9F8&index=3)
 
-
-Experienced programmers can easy write their own modules and/or user the REST Interface by looking at the source code in Github or even write a own plugin [https://openspecimen.atlassian.net/wiki/pages/viewpage.action?pageId=31064072]
+Experienced programmers can easy write their own modules and/or user the REST Interface by looking at the source code in Github or even write a own plugin <https://openspecimen.atlassian.net/wiki/pages/viewpage.action?pageId=31064072]>
 
