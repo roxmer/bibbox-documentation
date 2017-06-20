@@ -41,7 +41,7 @@ An **App** consists at least of the following files and directories, please neve
 
 * docker-compose-template.yml
 
-    Based on this file the docker-compose.yml will be generated during the installation, for the §§INSTANCE, §§PORT and all other environment and configuration variables staring withn "§§" will be replaced during the installation. Each template for a docker compose file should link to the bibbox-default-network network and use the busybox container as central mount point. 
+    Based on this file the docker-compose.yml will be generated. The variables §§INSTANCE, §§PORT and all other environment and configuration variables starting with "§§" will be replaced during the installation. Each template for a docker compose file should link to the `bibbox-default-network` network and use the `busybox` container as central mount point. 
     
 ```
  
