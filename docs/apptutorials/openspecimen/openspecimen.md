@@ -16,7 +16,7 @@
 * Don't forget to change the default access credentials!
 
 
-<h3>First Steps/h3>
+### First Steps 
 
 Openspecimen provides a community and an enterprose version. With the community version it is possible to organsie simple collections and user data export/import features. The enterprise version provides additional modules for dashboards and simple data entry. 
 
