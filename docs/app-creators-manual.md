@@ -272,9 +272,9 @@ Directory containing all docker images used in the docker-compose-template.yml (
 
 ## Versioning
 
-Each App should be versioned. We disinquish between
+Each App should be versioned. We distinguish between
 
-* **Development Version** generated from the master branch of the repository. The developmemt version is indetified by the tag `development` in the kit description,  
+* **Development Version** generated from the master branch of the repository. The developmemt version is identified by the tag `development` in the kit description,  
 
 * **Production Versions** generated from a specific release in the repository. For each major release. i.e. given by a new version of dockerized software tool, a new branch should be generated in the repository. Please note, that the tag name for the Github release should not contain dots as seperators, please use "_" instead. 
 
@@ -287,7 +287,7 @@ For the registration of an App two configuration files have to be extended:
 * [applications.json](https://github.com/bibbox/application-store/blob/master/applications.json) maps a Github repository to a human readable name of the App 
 
 
-* [eB3Kit.json](https://github.com/bibbox/application-store/blob/master/eB3Kit.json) puts the App into a specific **kit**. A **kit** defines the set of Apps together with metadata, which are displayed in the App store and can be installed in a BIBBOX instance. Today eB3kit is the default kit of the B3Afria project, in the future further kits can be defined. 
+* [eB3Kit.json](https://github.com/bibbox/application-store/blob/master/eB3Kit.json) puts the App into a specific **kit**. A **kit** defines ta group of Apps together with metadata, which are then displayed in the App store and can be installed in a BIBBOX instance. Today eB3kit is the default kit of the B3Afria project, in the future further kits will be defined. 
 
 
 
