@@ -15,14 +15,12 @@ An **App** consists at least of the following files and directories, please neve
 * README.md
 
     The default Github readme file shoud contain information about the used official docker images and docker images from the [BIBBOX dockerhub](https://hub.docker.com/r/bibbox/). In addition you should describe all mounted volumes and their content.            
-&nbsp;
+
   
 * INSTALL-APP.md
 
     Install instruction for the APP to follow after the first installation step (docker-compose up) is finished. This typicaly describes application specific configuration tasks. A link to this file is given in the Dashboard of the installed App. 
     
-&nbsp;  
-  
   
 * appinfo.json
     
@@ -40,8 +38,6 @@ An **App** consists at least of the following files and directories, please neve
             "tags": ["Tag1", "Tag2"]
     }
 ```
-&nbsp;
-
 
 * docker-compose-template.yml
 
@@ -111,7 +107,6 @@ An **App** consists at least of the following files and directories, please neve
           - ./var/app-config:/var/app-config
     
 ```
-&nbsp;
 
 
 * environment-parameters.json
@@ -160,8 +155,6 @@ An **App** consists at least of the following files and directories, please neve
 
     ]
 ```
-&nbsp;
-
 
 * configuration-parameters.json
 
@@ -191,8 +184,6 @@ An **App** consists at least of the following files and directories, please neve
     ]
     
 ```
-&nbsp;
-
 
 * filestructure.json
 
@@ -217,13 +208,12 @@ An **App** consists at least of the following files and directories, please neve
         ]
     }
 ```
-&nbsp;
+
 
 * icon.png
 
     Icon of the App in the application store und in the application dashboard. Please use a square format, e.g. 512x512 pixeland PNG with a transparency channel.
     
-&nbsp;
   
 * sys-info.json
 
@@ -236,7 +226,6 @@ An **App** consists at least of the following files and directories, please neve
       supportcontainers:["§§INSTANCE-app-data"]    
     }
 ```
-&nbsp;
     
 
 * portinfo.json
