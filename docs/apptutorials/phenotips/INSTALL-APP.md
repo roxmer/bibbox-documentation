@@ -1,4 +1,4 @@
-## APP-PHENOTIPS Installation Instructions 
+## Installation
 
 * start the application
 * phenotips will first intitialize its database (can take some minutes)
@@ -23,9 +23,3 @@
 
 ![Screenshot04](install-screen-04.png)
 
-
-## After the installation
-
-Have a nice ride with the new Admins youngtimer.
-
-![FINAL](install-screen-final.jpg)
